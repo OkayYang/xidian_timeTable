@@ -1,0 +1,60 @@
+var splitString = function (str) {
+	return str.split(',');
+}
+var autoLayout = function (imageUrls) {
+	var screenWidth = wx.getSystemInfoSync().windowWidth;
+	var imageWidth = (screenWidth - 30) / 2; // 图片宽度
+	var imageHeight = imageWidth; // 图片高度
+	var maxCount = 2; // 每行最多显示的图片数量
+	var rows = Math.ceil(imageUrls.length / maxCount); // 总共需要多少行
+	var lists = []; // 存储分组后的图片列表
+
+	// 分组
+	for (var i = 0; i < rows; i++) {
+		var start = i * maxCount;
+		var end = Math.min(start + maxCount, imageUrls.length);
+		var rowItemCount = end - start;
+		var rowWidth = rowItemCount * imageWidth + (rowItemCount - 1) * 10; // 10是图片之间的间距
+		var list = {
+			items: imageUrls.slice(start, end),
+			width: rowWidth,
+			height: imageHeight,
+		};
+		lists.push(list);
+	}
+
+	return lists;
+}
+
+function formatTime(date) {
+	var re = "00"
+
+	var timestamp = getDate().getTime(); //wxs中不能使用js中的Date()函数，只能使用getDate()来获取当前标准时间，getTime()函数可以用来将标准时间转换为时间戳，单位为ms
+	timestamp = parseInt(timestamp / 1000);
+//发表文章的时间戳 s
+var publicstamp = getDate(date).getTime();
+publicstamp = parseInt(publicstamp / 1000)
+//时间差s
+var gap = timestamp - publicstamp
+
+if (gap < 60) {
+	re = "刚刚"
+} else if (gap < 60 * 60) {
+	re = parseInt(gap / 60) + "分钟前"
+} else if (gap < 60 * 60 * 24) {
+	re = parseInt(gap / 60 / 60) + "小时前"
+} else if (gap < 60 * 60 * 24 * 30) {
+	re = parseInt(gap / 60 / 60 / 24) + "天前"
+} else {
+
+	re = date.substring(0, 10) //时间超过1个月返回具体的 年-月-日
+}
+return re
+}
+
+
+module.exports = {
+	splitString: splitString,
+	autoLayout: autoLayout,
+	formatTime: formatTime
+}

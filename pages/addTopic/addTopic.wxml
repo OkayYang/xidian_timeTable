@@ -1,0 +1,45 @@
+<!--pages/addTopic/addTopic.wxml-->
+<view class="main">
+	<view class="cu-form-group margin-top">
+		<textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaAInput" placeholder="分享这一刻想法"></textarea>
+	</view>
+	<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			图片上传
+		</view>
+		<view class="action">
+			{{imgList.length}}/4
+		</view>
+	</view>
+	<view class="cu-form-group">
+		<view class="grid col-4 grid-square flex-sub">
+			<view class="bg-img" wx:for="{{imgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{host+imgList[index]}}">
+				<image src='{{host+imgList[index]}}' mode='aspectFill'></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+					<text class="cuIcon-close"></text>
+				</view>
+			</view>
+			<view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<4}}">
+				<text class="cuIcon-cameraadd"></text>
+			</view>
+		</view>
+	</view>
+	<view class="cu-form-group margin-top">
+		<view class="title">话题</view>
+		<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+			<view class="picker">
+				{{index?picker[index]:'请选择'}}
+			</view>
+		</picker>
+	</view>
+	<view style=" margin: auto; margin-top: 100rpx; width: 90%;">
+		<van-button bind:click="publishTopic"  round  type="primary" block>发布话题</van-button>
+	</view>
+
+
+
+</view>
+<van-toast id="van-toast" />
+<!-- 在页面内添加对应的节点 -->
+<van-notify id="van-notify" />
+<van-dialog id="van-dialog" />

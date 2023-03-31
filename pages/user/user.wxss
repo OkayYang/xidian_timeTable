@@ -1,0 +1,84 @@
+/* pages/user/user.wxss */
+view, scroll-view, swiper, button, input, textarea, label, navigator, image {
+	box-sizing: unset !important;
+}
+.head{
+	position: relative;
+	height: 250rpx;
+	margin-top: -40rpx;
+	background-color: white;
+	border-top-left-radius: 30rpx;
+	border-top-right-radius: 30rpx;
+}
+.top-my{
+	display: flex;
+	justify-content: space-between;
+}
+.avatar-wrap{
+	display: inline-block;
+	width: 180rpx;
+	height: 180rpx;
+	border-radius: 90%;
+	background-color: white;
+	margin-top: -60rpx;
+	margin-left: 30rpx;
+	padding: 8rpx;
+
+}
+.avatar{
+	
+	width: 180rpx;
+	height: 180rpx;
+	border-radius: 90%;
+	background-color: white;
+}
+.edit{
+	margin-top: 20rpx;
+	margin-right: 30rpx;
+	border: 3rpx solid #ececec;
+	height: 50rpx;
+	border-radius: 40rpx;
+	font-size:25rpx;
+	background-color: #3271ae;
+
+
+}
+.edit-font{
+	line-height: 50rpx;
+	margin-left: 30rpx;
+	margin-right: 30rpx;
+	color: white;
+}
+.menu{
+	margin-top: 30rpx;
+}
+
+.van-swipe-cell__right {
+  display: inline-block;
+  width: 65px;
+  height: 44px;
+  font-size: 15px;
+  line-height: 44px;
+  color: #fff;
+  text-align: center;
+  background-color: #f44;
+}
+.styleTime{
+  margin-top: 50rpx;
+}
+ .van-swipe-cell__right {
+  display: inline-block;
+  width: 65px;
+  height: 44px;
+  font-size: 15px;
+  line-height: 44px;
+  color: #fff;
+  text-align: center;
+  background-color: #f44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} 
+.van-empty__description{
+  text-align: center;
+}

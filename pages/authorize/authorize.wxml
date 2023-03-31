@@ -1,0 +1,21 @@
+<!--pages/authorize/authorize.wxml-->
+<van-empty image="/assets/images/login.png" description="点击授权获得你的公开信息（昵称、头像）">
+  <view class="padding flex flex-direction">
+  
+  <button  open-type="chooseAvatar" bind:chooseavatar="login" style="width: 600rpx;" class="cu-btn bg-blue margin-tb-sm lg">微信授权登录</button>
+</view>
+</van-empty>
+
+<van-dialog use-slot title="请输入姓名" show="{{ nameShow }}" show-cancel-button bind:cancel="onNameCancel" bind:confirm="onNameConfirm">
+	<view>
+		<van-field type="nickname" value="{{ name }}" placeholder="请输入注册姓名" border="{{ false }}" bind:change="onNameInput" />
+	</view>
+</van-dialog>
+<van-toast id="van-toast" />
+<!-- 在页面内添加对应的节点 -->
+<van-notify id="van-notify" />
+
+
+
+
+

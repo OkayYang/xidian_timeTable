@@ -1,0 +1,11 @@
+{
+	"usingComponents": {
+		"van-notice-bar": "@vant/weapp/notice-bar/index",
+		"i-load-more": "../../dist/load-more/index",
+		"my-swiper":"../../dist/my-swiper/index",
+		"van-tab": "@vant/weapp/tab/index",
+	"van-tabs": "@vant/weapp/tabs/index",
+	"mp-html": "mp-html"
+	},
+	"navigationBarTitleText": "首页"
+}

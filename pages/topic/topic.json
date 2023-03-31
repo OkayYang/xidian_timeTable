@@ -1,0 +1,9 @@
+{
+	"usingComponents": {
+		"van-tab": "@vant/weapp/tab/index",
+	"van-tabs": "@vant/weapp/tabs/index",
+	"i-load-more": "../../dist/load-more/index"
+	},
+	"enablePullDownRefresh": true,
+	"navigationBarTitleText": "话题专区"
+}

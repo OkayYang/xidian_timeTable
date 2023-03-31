@@ -1,0 +1,20 @@
+<!--pages/detail/detail.wxml-->
+<!-- 网络错误 -->
+<view wx:if="{{article==null}}">
+	<van-empty image="network" description="网络异常" />
+</view>
+<view wx:else >
+<view class="body">
+	<view style="text-align: center;font-size: large; font-weight: bold;">{{article.articleTitle}}</view>
+	<view style="text-align: left; margin-top: 20rpx;margin-bottom: 10rpx;" >
+	发布时间：{{article.createTime}} 
+	</view>
+	<!-- <view style="text-align: right;">发布者：{{article.createBy}}</view> -->
+	<mp-html content="{{article.articleContent}}" />
+	<view class="bottom"></view>
+</view>
+
+
+</view>
+
+<van-toast id="van-toast" />

@@ -1,0 +1,8 @@
+{
+	"usingComponents": {
+		"van-cell": "@vant/weapp/cell/index",
+		"van-cell-group": "@vant/weapp/cell-group/index",
+		"van-picker": "@vant/weapp/picker/index"
+	},
+	"navigationBarTitleText": "发布话题"
+}

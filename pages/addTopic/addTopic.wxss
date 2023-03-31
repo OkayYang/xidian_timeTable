@@ -1,0 +1,6 @@
+/* pages/addTopic/addTopic.wxss */
+.main{
+
+	margin: auto;
+	margin-top: 20rpx;
+}

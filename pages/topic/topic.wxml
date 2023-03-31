@@ -1,0 +1,73 @@
+<wxs src="../../utils/utils.wxs" module="utils" />
+
+<van-tabs active="{{ active }}">
+	<van-tab title="全部">
+		<view class="cu-card dynamic" wx:for="{{topicList}}" wx:key="item">
+			<view class="cu-item shadow">
+				<view class="cu-list menu-avatar">
+					<view class="cu-item">
+						<view class="cu-avatar round lg" style="background-image:url({{host+item.uImage}});"></view>
+						<view class="content flex-sub">
+							<view>{{item.uNick}}</view>
+							<view class="text-gray text-sm flex justify-between">
+								{{utils.formatTime(item.createTime)}}
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="text-content">
+					{{item.topicContent}}
+				</view>
+				<view class="grid flex-sub padding-lr col-1">
+					<view wx:if="{{item.topicImages!=''}}" class="bg-img only-img flex-sub" style="background-image:url({{host+img}}); background-size: cover;margin-left: 5rpx;margin-right: 5rpx;height: {{utils.splitString(item.topicImages).length>2?'150rpx':'300rpx'}}; " wx:for="{{utils.splitString(item.topicImages)}}" wx:for-item="img" wx:key="{{img}}">
+					</view>
+
+				</view>
+				<view class="text-gray text-sm text-right padding">
+					<text class="cuIcon-attentionfill margin-lr-xs"></text> {{item.topicFlows}}
+					<text class="cuIcon-appreciatefill margin-lr-xs"></text> {{item.topicLikes}}
+					<text class="cuIcon-messagefill margin-lr-xs"></text> {{item.commentCount}}
+				</view>
+			</view>
+		</view>
+	</van-tab>
+	<van-tab title="{{item.ttName}}" wx:for="{{typeList}}" wx:key="item">
+		<view class="cu-card dynamic" wx:for="{{topicList}}" wx:for-item="topic" wx:key="{{topic}}"wx:if="{{topic.topicTypeId==item.ttId}}" >
+			<view  class="cu-item shadow">
+				<view class="cu-list menu-avatar">
+					<view class="cu-item">
+						<view class="cu-avatar round lg" style="background-image:url({{host+topic.uImage}});"></view>
+						<view class="content flex-sub">
+							<view>{{topic.uNick}}</view>
+							<view class="text-gray text-sm flex justify-between">
+								{{utils.formatTime(item.createTime)}}
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="text-content">
+				{{topic.topicContent}}
+				</view>
+				<view class="grid flex-sub padding-lr col-1">
+					<!-- <view class="bg-img only-img" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg);" wx:for="{{isCard?9:1}}" wx:key="{{index}}">
+					</view> -->
+					<view wx:if="{{topic.topicImages!=''}}" class="bg-img only-img flex-sub" style="background-image:url({{host+img}}); background-size: cover;margin-left: 5rpx;margin-right: 5rpx;height: {{utils.splitString(topic.topicImages).length>2?'150rpx':'300rpx'}}; " wx:for="{{utils.splitString(topic.topicImages)}}" wx:for-item="img" wx:key="{{img}}">
+					</view>
+				</view>
+				<view class="text-gray text-sm text-right padding">
+					<text class="cuIcon-attentionfill margin-lr-xs"></text> {{topic.topicFlows}}
+					<text class="cuIcon-appreciatefill margin-lr-xs"></text> {{topic.topicLikes}}
+					<text class="cuIcon-messagefill margin-lr-xs"></text> {{topic.commentCount}}
+				</view>
+			</view>
+		</view>
+	</van-tab>
+
+
+</van-tabs>
+<i-load-more tip="{{loaddingText}}" loading="{{ loadding }}" />
+<view bindtap="addTopicBtn" style="width: 120rpx; height: 120rpx;position: fixed;bottom: 50rpx;right: 20rpx;">
+	<image style="width: 90rpx; height: 90rpx;" src="/assets/images/add.png" />
+</view>
+<van-toast id="van-toast" />
+<van-dialog id="van-dialog" />

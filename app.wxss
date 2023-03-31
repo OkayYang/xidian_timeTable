@@ -1,0 +1,49 @@
+/**app.wxss**/
+/* 根目录 app.wxss 文件 */
+@import "colorui/main.wxss";
+@import "colorui/icon.wxss";
+/* 若需要使用微动画，请引入 animation.wxss */
+@import "colorui/animation.wxss";
+@font-face {
+  font-family: "iconfont"; /* Project id 3984136 */
+  src: url('//at.alicdn.com/t/c/font_3984136_sq6x3xc6m3s.woff2?t=1680071199075') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3984136_sq6x3xc6m3s.woff?t=1680071199075') format('woff'),
+       url('//at.alicdn.com/t/c/font_3984136_sq6x3xc6m3s.ttf?t=1680071199075') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shoucang:before {
+  content: "\e604";
+}
+
+.icon-message:before {
+  content: "\e64c";
+}
+
+.icon-huatizhuti:before {
+  content: "\e641";
+}
+
+.icon-bisai:before {
+  content: "\e6ab";
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+}
+page{
+	background-color: #f7f7f7;
+}

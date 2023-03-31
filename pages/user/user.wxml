@@ -1,0 +1,84 @@
+<!--pages/user/user.wxml-->
+<wxs src="../../utils/utils.wxs" module="utils" />
+<view>
+	<image style="height: 300rpx; width: 100%;" src="/assets/images/bk.jpg" />
+</view>
+
+<view class="head">
+	<view class="top-my">
+		<view class="avatar-wrap">
+
+			<image src="{{userInfo==null?'/assets/images/avatar.png':host+userInfo.ncUser.uImage}}" class="avatar"></image>
+
+		</view>
+
+		<view wx:if="{{userInfo==null}}" bindtap="loginbtn" class="edit">
+			<text class="edit-font">用户授权</text>
+		</view>
+		<view wx:else bindtap="editbtn" class="edit">
+			<text class="edit-font">编辑个人信息</text>
+		</view>
+	</view>
+	<view style="margin-left: 30rpx;">
+		<view style="font-weight: bold;font-size: large;">
+			{{userInfo==null||userInfo.ncUser.uNick==null?"微信用户":userInfo.ncUser.uNick}}
+		</view>
+		<view style="color:#7f8c8d;width: 100%;">
+			简介：{{userInfo==null||userInfo.ncUser.uDesc==null?"这家伙很懒,什么也没留下":uDesc}}
+		</view>
+	</view>
+	<view class="menu">
+		<van-tabs color="#3271ae" title-active-color="#3271ae" active="{{ active }}" bind:change="onChange">
+			<van-tab title="话题">
+				<view wx:if="{{topics.length>0}}">
+					<view class="card" wx:for="{{topics}}" wx:key="item">
+						<van-swipe-cell data-tid="{{item.topicId}}" right-width="{{ 65 }}" async-close  bind:close="onClose" bind:click="clickCard">
+							<van-cell-group>
+
+								<van-card  thumb="{{item.topicImages!=''?host+utils.splitString(item.topicImages)[0]:''}}" centered="true">
+									<view slot="title" style="font-size: larger; font-weight: bolder;">{{item.topicContent}}</view>
+									<view slot="desc" >
+										<!-- <van-icon  size="60rpx" name="eye-o" info="{{item.topicFlows<99?topicFlows:'99+'}}" /> -->
+										<view>{{utils.formatTime(item.createTime)}}</view>
+										<van-icon style="margin-top: 20rpx;" wx:if="{{item.commentCount>0}}" size="40rpx" name="chat" dot="{{item.commentCount>0}}" />
+										<!-- <van-icon style="margin-left: 30rpx;" size="60rpx" name="good-job-o"  info="{{item.topicLikes<99?topicLikes:'99+'}}"/> -->
+									</view>
+								
+								</van-card>
+							</van-cell-group>
+							<view slot="right" class="van-swipe-cell__right">删除</view>
+						</van-swipe-cell>
+
+					</view>
+					<i-load-more tip="{{loaddingText}}" loading="{{ loadding }}" />
+				</view>
+				<view wx:else>
+					<van-empty description="你还没发布话题" />
+				</view>
+			</van-tab>
+			<van-tab title="评论">
+				<view wx:if="{{comments.length>0}}">1</view>
+				<view wx:else>
+					<van-empty image="error" description="你还没发布话题" />
+				</view>
+			</van-tab>
+			<van-tab title="参赛">
+				<view wx:if="{{bisais.length>0}}">1</view>
+				<view wx:else>
+					<van-empty image="search" description="你还没参赛比赛" />
+				</view>
+			</van-tab>
+		</van-tabs>
+
+	</view>
+
+</view>
+
+<!-- 在页面内添加对应的节点 -->
+<van-dialog id="van-dialog" />
+<van-toast id="van-toast" />
+<!-- 在页面内添加对应的节点 -->
+<van-notify id="van-notify" />
+
+
+
