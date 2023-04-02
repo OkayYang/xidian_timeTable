@@ -17,11 +17,24 @@ Page({
 		pageSize:0,
 		pageNum:5,
 		isEnd:false,
+		token:null
 
+	},
+	ViewImage(e) {
+		console.log(e)
+		wx.previewImage({
+			urls:e.currentTarget.dataset.urls,
+			current: e.currentTarget.dataset.url
+		});
+	},
+	detailTopic(event){
+		wx.navigateTo({
+			url: '/pages/detailTopic/detailTopic?tid='+event.currentTarget.dataset.tid,
+		})
 	},
 	addTopicBtn() {
 		let that = this
-		if (this.data.userInfo != null) {
+		if (this.data.token != null) {
 			wx.navigateTo({
 				url: '/pages/addTopic/addTopic',
 				events: {
@@ -96,17 +109,18 @@ Page({
 	onShow() {
 		this.initData()
 		wx.getStorage({
-			key: "user",
+			key: "token",
 			success: (res) => {
 				this.setData({
-					userInfo: JSON.parse(res.data)
+					token: res.data
+				//	userInfo: res.data
 				})
 			}
 		})
 	},
 	initData() {
 		Toast.loading({
-			duration: 0,
+			duration: 1000,
 			message: '加载中...',
 			forbidClick: true,
 		});

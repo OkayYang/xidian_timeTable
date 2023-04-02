@@ -8,7 +8,7 @@
 	<view class="top-my">
 		<view class="avatar-wrap">
 
-			<image src="{{userInfo==null?'/assets/images/avatar.png':host+userInfo.ncUser.uImage}}" class="avatar"></image>
+			<image src="{{userInfo==null?'/assets/images/avatar.png':host+userInfo.uImage}}" class="avatar"></image>
 
 		</view>
 
@@ -21,29 +21,27 @@
 	</view>
 	<view style="margin-left: 30rpx;">
 		<view style="font-weight: bold;font-size: large;">
-			{{userInfo==null||userInfo.ncUser.uNick==null?"微信用户":userInfo.ncUser.uNick}}
+			{{userInfo==null||userInfo.uNick==null?"微信用户":userInfo.uNick}}
 		</view>
 		<view style="color:#7f8c8d;width: 100%;">
-			简介：{{userInfo==null||userInfo.ncUser.uDesc==null?"这家伙很懒,什么也没留下":uDesc}}
+			简介：{{userInfo==null||userInfo.uDesc==null?"这家伙很懒,什么也没留下":userInfo.uDesc}}
 		</view>
 	</view>
 	<view class="menu">
 		<van-tabs color="#3271ae" title-active-color="#3271ae" active="{{ active }}" bind:change="onChange">
 			<van-tab title="话题">
-				<view wx:if="{{topics.length>0}}">
+				<view wx:if="{{topics.length>0}}" class="listCard">
 					<view class="card" wx:for="{{topics}}" wx:key="item">
-						<van-swipe-cell data-tid="{{item.topicId}}" right-width="{{ 65 }}" async-close  bind:close="onClose" bind:click="clickCard">
+						<van-swipe-cell data-tid="{{item.topicId}}" right-width="{{ 65 }}" async-close bind:close="onClose" bind:click="clickTopicCard">
 							<van-cell-group>
-
-								<van-card  thumb="{{item.topicImages!=''?host+utils.splitString(item.topicImages)[0]:''}}" centered="true">
+								<van-card thumb-mode="scaleToFill" thumb="{{item.topicImages!=''?host+utils.splitString(item.topicImages)[0]:'/assets/images/topicImage.png'}}" centered="true">
 									<view slot="title" style="font-size: larger; font-weight: bolder;">{{item.topicContent}}</view>
-									<view slot="desc" >
+									<view slot="desc">
 										<!-- <van-icon  size="60rpx" name="eye-o" info="{{item.topicFlows<99?topicFlows:'99+'}}" /> -->
-										<view>{{utils.formatTime(item.createTime)}}</view>
+										<view>{{item.createTime}}</view>
 										<van-icon style="margin-top: 20rpx;" wx:if="{{item.commentCount>0}}" size="40rpx" name="chat" dot="{{item.commentCount>0}}" />
 										<!-- <van-icon style="margin-left: 30rpx;" size="60rpx" name="good-job-o"  info="{{item.topicLikes<99?topicLikes:'99+'}}"/> -->
 									</view>
-								
 								</van-card>
 							</van-cell-group>
 							<view slot="right" class="van-swipe-cell__right">删除</view>
@@ -56,16 +54,77 @@
 					<van-empty description="你还没发布话题" />
 				</view>
 			</van-tab>
-			<van-tab title="评论">
-				<view wx:if="{{comments.length>0}}">1</view>
+			<van-tab title="消息">
+				<view wx:if="{{comments.length>0}}" class="listCard">
+					<view wx:for="{{comments}}" wx:key="item">
+						<view style="width: 95%;background-color: #ffffff;border-radius: 20rpx;margin: 20rpx auto;overflow: hidden;" bindtap="clickTopicCard" data-tid="{{item.topicId}}">
+							<view class="header" style="display: flex;">
+								<view class="cu-avatar round " style="background-image:url({{host+item.uImage}});margin: 20rpx;margin-right: 20rpx;"></view>
+
+								<view style="margin: 20rpx 0 0 -10rpx;">
+									<view>
+										<text style="font-weight: 800;color: #19a3ff;">{{item.commentNick}}</text>
+										<text wx:if="{{item.parentCommentUid!=null}}">回复了你的评论</text>
+										<text wx:else>回复了你的帖子</text>
+									</view>
+									<view>
+										<text style="color: #969799;font-size: 25rpx;">{{item.createTime}}</text>
+									</view>
+								</view>
+							</view>
+							<view class="content" style="margin: 0 0 10rpx 55rpx;">
+								<view>
+									<text>{{item.discussContent}}</text>
+								</view>
+								
+								<!-- <view wx:if="{{item.replyImage!=null}}">
+									<image mode="aspectFit" src="/assets/images/avatar.png" style="width: 120rpx;height:120rpx;"></image>
+								</view> -->
+							</view>
+							<view class="info" style="background-color: #f5f5f5;width: 90%;margin: 0 auto 20rpx auto;overflow: hidden;">
+								<view style="background-color: #ffffff;width: 95%;margin: 15rpx auto 0 auto ;border-radius: 5rpx;overflow: hidden;">
+									<view style="margin: 15rpx 0 0 20rpx;">
+										<text style="color:#444749;">{{item.topicContent}}</text>
+									</view>
+									<view>
+										<text style="color: #969799;font-size: 25rpx;margin: 0 0 0 20rpx;">{{item.topicFlows}}阅读</text>
+									</view>
+								</view>
+								<view style="margin: 20rpx 0 10rpx 20rpx;">
+								
+									<text wx:if="{{item.parentCommentUid!=null}}" style="color:#626262 ;font-size: 30rpx;">{{item.parentCommentNick}}:{{item.parentCommentContent}}</text>
+									<!-- <text wx:if="{{item.replyedImage!=null}}" style="color:#626262 ;font-size: 30rpx;">[图片]</text> -->
+								</view>
+							</view>
+						</view>
+						<view>
+						</view>
+					</view>
+				</view>
 				<view wx:else>
-					<van-empty image="error" description="你还没发布话题" />
+					<van-empty image="error" description="暂无消息" />
 				</view>
 			</van-tab>
 			<van-tab title="参赛">
-				<view wx:if="{{bisais.length>0}}">1</view>
+				<view wx:if="{{bisais!=null}}" class="listCard">
+					<!-- <view class="card" wx:for="{{topics}}" wx:key="item">
+						<van-swipe-cell data-tid="{{item.topicId}}" right-width="{{ 65 }}" async-close bind:close="onClose" bind:click="clickBiSaiCard">
+							<van-cell-group>
+								<van-card centered="true">
+									<view slot="title" style="font-size: larger;"><text style="font-weight: bold;">赛事：</text>软件工程学院程序设计大赛</view>
+									<view slot="footer" style="margin-top: 30rpx;">
+										<van-button type="info" size="mini" style="margin-right: 10rpx;">了解详细</van-button>
+										<van-button type="primary" size="mini">立刻报名</van-button>
+									</view>
+								</van-card>
+							</van-cell-group>
+							<view slot="right" class="van-swipe-cell__right">删除</view>
+						</van-swipe-cell>
+					</view>
+					<i-load-more tip="{{loaddingText}}" loading="{{ loadding }}" /> -->
+				</view>
 				<view wx:else>
-					<van-empty image="search" description="你还没参赛比赛" />
+					<van-empty image="search" description="当前没有可报赛事" />
 				</view>
 			</van-tab>
 		</van-tabs>
@@ -79,6 +138,3 @@
 <van-toast id="van-toast" />
 <!-- 在页面内添加对应的节点 -->
 <van-notify id="van-notify" />
-
-
-

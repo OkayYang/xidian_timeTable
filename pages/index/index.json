@@ -7,5 +7,6 @@
 	"van-tabs": "@vant/weapp/tabs/index",
 	"mp-html": "mp-html"
 	},
-	"navigationBarTitleText": "首页"
+	"navigationBarTitleText": "首页",
+	"enablePullDownRefresh": true
 }

@@ -1,0 +1,106 @@
+<!--pages/detailTopic/detailTopic.wxml-->
+<wxs src="../../utils/utils.wxs" module="utils" />
+
+<view class="cu-card dynamic no-card" wx:if="{{topic!=null}}">
+  <view class="cu-item shadow">
+    <view class="cu-list menu-avatar">
+      <view class="cu-item">
+        <view class="cu-avatar round lg" style="background-image:url({{host+topic.uImage}});"></view>
+        <view class="content flex-sub">
+          <view class="text-bold text-lg">{{topic.uNick}}</view>
+          <view class="text-gray  flex justify-between">
+            {{topic.createTime}}
+          </view>
+        </view>
+        <view class="text-content text-gray text-lg" style="margin-right: 30rpx;">#{{topic.ttName}}</view>
+
+      </view>
+    </view>
+    <view class="text-content">
+      {{topic.topicContent}}
+    </view>
+    <view class="grid flex-sub padding-lr col-2 grid-square">
+      <view  wx:if="{{topic.topicImages!=''}}"  class="bg-img {{utils.splitString(topic.topicImages).length==1?'only-img':''}}" 
+      style="background-image:url({{host+img}});" wx:for="{{utils.splitString(topic.topicImages)}}" wx:for-item="img" wx:key="{{img}}" bindtap="ViewImage"
+						data-url="{{host+img}}" data-urls="{{utils.splitString(topic.topicImages)}}"
+      >
+      </view>
+    </view>
+    <view class="text-gray text-lg text-right padding flex justify-end" >
+		<view bindtap="topicComment">
+		
+      <text class="cuIcon-attentionfill margin-lr-xs"></text> {{topic.topicFlows+1}}
+					<!-- <text class="cuIcon-appreciatefill margin-lr-xs"></text> {{topic.topicLikes}} -->
+					<text class="cuIcon-messagefill margin-lr-xs"></text> {{commentCount}}
+				</view>
+				
+    </view>
+    <view class="cu-list menu-avatar comment solids-top" wx:if="{{comments.length!=0}}" style="margin-bottom: 50rpx;">
+      <view class="cu-item" wx:for="{{comments}}" wx:key="item">
+        <view class="cu-avatar round" style="background-image:url({{host+item.uImage}});"></view>
+        <view class="content">
+          <view  class="text-black  text-xl"><text style="font-weight: bold;"> {{item.uNick}}</text>
+					<view wx:if="{{topic.uid==item.uid}}" style="margin-left: 10rpx;" class=" cu-tag line-blue text-sm radius  text-grey">楼主</view>
+					</view>
+          <view class="text-black text-content text-df" data-reply="{{item}}" data-uid="{{item.uid}}" bindlongpress="onCommentLongPress" bindtap="commentClick">
+           {{item.discussContent}}
+          </view>
+          <!-- <view  class="flex-sub"> <van-image fit="contain"  width="300rpx" height="300rpx" src="https://img.yzcdn.cn/vant/cat.jpeg" /></view> -->
+          <!-- 子评论 -->
+          <view  wx:if="{{item.childrenComments.length>0}}" class="bg-grey padding-sm radius margin-top-sm   light">
+            <view  class="flex "  wx:for="{{item.childrenComments}}" wx:for-item="comment" wx:key="{{comment}}" data-reply="{{comment}}" data-uid="{{comment.uid}}" bindlongpress="onCommentLongPress" bindtap="commentClick" >
+              <view class="text-blue" wx:if="{{comment.parentComments==null}}">
+							{{comment.uNick}}
+							<view wx:if="{{topic.uid==comment.uid}}"class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view>
+							:
+
+							</view>
+              <view  class="text-blue"  wx:else>{{comment.uNick}}<view wx:if="{{topic.uid==comment.uid}}"class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view><text  class="text-black" >回复</text>{{comment.parentComments.uNick}}<view wx:if="{{topic.uid==comment.parentComments.uid}}"class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view>：</view>
+              <view class="flex-sub text-black" >{{comment.discussContent}}</view>
+            </view>
+          </view>
+          <view class="margin-top-sm flex justify-between">
+            <view class="text-gray text-df">{{item.createTime}}</view>
+            <view>
+              <!-- <text class="cuIcon-appreciatefill text-red"></text> -->
+              <text class="cuIcon-messagefill text-gray margin-left-sm" data-reply="{{item}}" bindtap="commentClick"></text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <i-load-more tip="到底了" loading="{{ false }}" />
+
+
+    
+    </view>
+  </view>
+</view>
+<view wx:else>
+	<van-empty image="error" description="访问页面不存在" />
+</view>
+<view wx:if="{{!showPopup}}" class="cu-bar foot input {{InputBottom!=0?'cur':''}}" style="bottom:{{InputBottom}}px;">
+  <view class="action">
+    <!-- <text class="cuIcon-pic lg text-gray"></text> -->
+		<text class="cuIcon-write lg text-gray"></text>
+  </view>
+  <input class="solid-bottom" bindinput="commentInput" value="{{inputText}}" 	 bindfocus="InputFocus" bindblur="InputBlur" adjust-position="{{true}}" placeholder="{{placeholder}}" focus="{{inputFocus}}" maxlength="300" cursor-spacing="10"></input>
+  
+  <button class="cu-btn bg-green shadow" bindtap="sendComment">评论</button>
+</view>
+<!-- 在页面内添加对应的节点 -->
+<van-notify id="van-notify" />
+<van-dialog id="van-dialog" />
+<van-toast id="van-toast" />
+
+
+<van-action-sheet
+  show="{{ showPopup }}"
+  actions="{{ actions }}"
+  description="确认要删除评论吗？"
+	cancel-text="取消"
+	bind:close="onPopupClose"
+	bind:cancel="onPopupClose"
+	bind:select="onPopupClick"
+/>
+
+

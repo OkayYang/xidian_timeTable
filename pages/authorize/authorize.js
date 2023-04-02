@@ -47,46 +47,53 @@ Page({
 	},
 
 	//name
-	
+
 	onNameConfirm() {
-		let that =this
+		let that = this
 		let name = this.data.name
 		//提交登录
 		if (this.isValidName(name) && name != null) {
 			this.setData({
 				name: name,
 			})
-			console.log(name,this.data.avatarUrl)
+			console.log(name, this.data.avatarUrl)
 			wx.login({
-				success (res) {
+				success(res) {
 					if (res.code) {
 						//发起网络请求
 						wx.request({
 							url: that.data.host + '/wx/user/login',
-							method:'POST',
+							method: 'POST',
 							data: {
 								code: res.code,
-								avatarUrl:that.data.avatarUrl,
-								nickName:name
+								avatarUrl: that.data.avatarUrl,
+								nickName: name
 							},
-							success:(res)=>{
-								if(res.data.code==200){
+							success: (res) => {
+								if (res.data.code == 200) {
+									let data = res.data.data
 									wx.setStorage({
 										key: "user",
-										data:res.data.data,
-										success:(res)=>{
-											Toast({
-												type: 'success',
-												message: '登录成功',
-												onClose: () => {
-													
-													wx.navigateBack()
-												},
-											});
+										data: data.ncUser,
+										success: (res) => {
+											wx.setStorage({
+												key: "token",
+												data: data.token,
+												success: (res) => {
+													Toast({
+														type: 'success',
+														message: '登录成功',
+														onClose: () => {
+															wx.navigateBack()
+														},
+													});
+												}
+											})
+
 										}
 									})
 
-								}else{
+								} else {
 									Toast.fail("登录失败!")
 								}
 								console.log(res)
@@ -98,7 +105,7 @@ Page({
 					}
 				}
 			})
-			
+
 		} else {
 			Toast.fail("格式错误")
 		}

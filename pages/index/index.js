@@ -47,9 +47,8 @@ Page({
 
 	},
 	initData() {
-
 		Toast.loading({
-			duration: 1000, // 持续展示 toast
+			duration: 800, // 持续展示 toast
 			forbidClick: true,
 			message: '加载中',
 		});
@@ -134,6 +133,11 @@ Page({
 	 * 页面相关事件处理函数--监听用户下拉动作
 	 */
 	onPullDownRefresh: function () {
+		wx.showNavigationBarLoading();
+		this.initData()
+		wx.hideNavigationBarLoading();
+		//停止下拉刷新
+		wx.stopPullDownRefresh();
 
 	},
 

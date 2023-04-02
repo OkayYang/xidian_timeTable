@@ -82,3 +82,9 @@ view, scroll-view, swiper, button, input, textarea, label, navigator, image {
 .van-empty__description{
   text-align: center;
 }
+.listCard{
+	margin-top: 5rpx;
+}
+.van-card{
+	background-color: white !important;
+}

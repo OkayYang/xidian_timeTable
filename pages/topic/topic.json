@@ -5,5 +5,6 @@
 	"i-load-more": "../../dist/load-more/index"
 	},
 	"enablePullDownRefresh": true,
+	
 	"navigationBarTitleText": "话题专区"
 }

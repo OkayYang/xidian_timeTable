@@ -1,0 +1,9 @@
+{
+	"usingComponents": {
+		"van-image": "@vant/weapp/image/index",
+		"van-action-sheet": "@vant/weapp/action-sheet/index"
+	},
+	"navigationBarTitleText": "话题详细",
+	"enablePullDownRefresh": true
+	
+}

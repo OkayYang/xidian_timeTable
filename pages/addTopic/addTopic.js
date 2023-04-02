@@ -10,7 +10,7 @@ Page({
 	 */
 	data: {
 		host: app.globalData.host,
-		userInfo:null,
+		token:null,
 		topicTypeList: [],
 		imgList: [],
 		index: null,
@@ -103,7 +103,7 @@ Page({
 		let content = this.data.textareaAValue
 		let topicTypeId = this.data.topicTypeList[this.data.index].ttId
 		let topicImages = this.data.imgList.join(',')
-		let token = this.data.userInfo.token
+		let token = this.data.token
 		wx.request({
 			url: this.data.host+'/wx/topic/add',
 			method:'POST',
@@ -167,10 +167,10 @@ Page({
 	},
 	validLogin(){
 		wx.getStorage({
-			key:"user",
+			key:"token",
 			success:(res)=>{
 				this.setData({
-					userInfo:JSON.parse(res.data)
+					token:res.data
 				})
 			},
 			fail:(res)=>{

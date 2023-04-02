@@ -52,9 +52,21 @@ if (gap < 60) {
 return re
 }
 
+function findTypeName(id,list){
+	for (var index = 0; index < list.length; index++) {
+		if(id==list[index].ttId){
+			return list[index].ttName
+
+		}
+		
+	}
+
+}
+
 
 module.exports = {
 	splitString: splitString,
 	autoLayout: autoLayout,
-	formatTime: formatTime
+	formatTime: formatTime,
+	findTypeName:findTypeName
 }
