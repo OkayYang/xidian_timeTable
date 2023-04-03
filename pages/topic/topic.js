@@ -1,6 +1,7 @@
 // pages/topic/topic.js
 import Toast from '@vant/weapp/toast/toast';
 import Dialog from '@vant/weapp/dialog/dialog';
+import Notify from '@vant/weapp/notify/notify';
 const app = getApp()
 Page({
 
@@ -14,22 +15,37 @@ Page({
 		host: app.globalData.host,
 		typeList: [],
 		topicList: [],
-		pageSize:0,
-		pageNum:5,
-		isEnd:false,
-		token:null
+		pageSize: 5,
+		pageNum: 1,
+		pageTopicTotal: 0,
+		isEnd: false,
+		token: null,
+		currentTopicTypeId: 0,
 
 	},
 	ViewImage(e) {
-		console.log(e)
+	//	console.log(e)
+		let array = e.currentTarget.dataset.urls;
+		for (let index = 0; index < array.length; index++) {
+			array[index]=this.data.host+array[index]
+		}
 		wx.previewImage({
-			urls:e.currentTarget.dataset.urls,
+			urls: e.currentTarget.dataset.urls,
 			current: e.currentTarget.dataset.url
 		});
 	},
-	detailTopic(event){
+	onTabChange(e) {
+		let index = e.detail.name
+		let ttid = this.data.typeList[index].ttId
+		// console.log("typeId:"+this.data.typeList[index].ttId)
+		this.setData({
+			active: index,
+			currentTopicTypeId: ttid
+		})
+	},
+	detailTopic(event) {
 		wx.navigateTo({
-			url: '/pages/detailTopic/detailTopic?tid='+event.currentTarget.dataset.tid,
+			url: '/pages/detailTopic/detailTopic?tid=' + event.currentTarget.dataset.tid,
 		})
 	},
 	addTopicBtn() {
@@ -50,9 +66,9 @@ Page({
 			})
 		} else {
 			Dialog.confirm({
-					title: '提示',
-					message: '请先授权登录',
-				})
+				title: '提示',
+				message: '请先授权登录',
+			})
 				.then(() => {
 					wx.navigateTo({
 						url: '/pages/authorize/authorize',
@@ -65,6 +81,37 @@ Page({
 
 		}
 
+	},
+
+	initTopicData() {
+		let array = this.data.typeList;
+		console.log(array)
+		for (let index = 0; index < array.length; index++) {
+			let element = array[index];
+			wx.request({
+				url: this.data.host + '/wx/topic/list/' + element.ttId + '?pageSize=5&pageNum=' + element.currentPage,
+				success: (res) => {
+					//console.log(res.data)
+					if (res.data.code == 200) {
+						let param1 = 'typeList[' + index + '].wxTopics'
+						let param2 = 'typeList[' + index + '].currentPage'
+						let param3 = 'typeList[' + index + '].pageCount'
+						this.setData({
+							[param1]: res.data.rows,
+							[param2]: element.currentPage+1,
+							[param3]: res.data.total
+						})
+					}
+				},
+				fail: (res) => {
+					Notify({ type: 'danger', message: '服务器异常' });
+				},
+				complete: (res) => {
+					Toast.clear()
+				}
+			})
+
+		}
 	},
 
 
@@ -80,20 +127,22 @@ Page({
 			forbidClick: true,
 			message: '加载中',
 		});
+		this.loadTopicType()
+	},
+	loadTopicType() {
 		wx.request({
 			url: this.data.host + '/wx/topic/type',
 			success: (res) => {
-				console.log(res)
+				//console.log(res)
 				let data = res.data.data
-				for (let index = 0; index < data.length; index++) {
-					this.setData({
-						typeList: data
-					})
-
-				}
+				let active = this.data.active
+				this.setData({
+					typeList: data,
+					currentTopicTypeId: data[active].ttId
+				})
+				this.initTopicData()
 			}
 		})
-
 	},
 
 	/**
@@ -107,36 +156,44 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		this.initData()
+		this.setData({
+			active: 0,
+		})
+		//this.loadTopicData()
 		wx.getStorage({
 			key: "token",
 			success: (res) => {
 				this.setData({
 					token: res.data
-				//	userInfo: res.data
+					//	userInfo: res.data
 				})
 			}
 		})
 	},
-	initData() {
+	loadTopicData() {
 		Toast.loading({
-			duration: 1000,
+			duration: 0, 
 			message: '加载中...',
 			forbidClick: true,
+			loadingType: 'spinner',
 		});
 		wx.request({
-			url: this.data.host + '/wx/topic/list',
+			url: this.data.host + '/wx/topic/list/' + this.data.currentTopicTypeId + '?pageSize=5&pageNum=' + this.data.typeList[this.data.active].currentPage,
 			success: (res) => {
 				//	console.log(res.data)
 				if (res.data.code == 200) {
+					let param1 = 'typeList[' + this.data.active + '].wxTopics'
+					let param2 = 'typeList[' + this.data.active + '].currentPage'
+					let param3 = 'typeList[' + this.data.active + '].pageCount'
 					this.setData({
-						topicList: res.data.data
+						[param1]: this.data.typeList[this.data.active].wxTopics.concat(res.data.rows),
+						[param2]:this.data.typeList[this.data.active].currentPage+1,
+						[param3]:res.data.total
 					})
-
 				}
 			},
 			fail: (res) => {
-				Toast.fail("连接服务器异常")
+				Notify({ type: 'danger', message: '服务器异常' });
 			},
 			complete: (res) => {
 				Toast.clear()
@@ -158,12 +215,24 @@ Page({
 
 	},
 
+
+
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
 	 */
 	onPullDownRefresh() {
 		wx.showNavigationBarLoading();
-		this.initData()
+		//更新数据
+		let param1 = 'typeList[' + this.data.active + '].wxTopics'
+		let param2 = 'typeList[' + this.data.active + '].currentPage'
+		let param3 = 'typeList[' + this.data.active + '].pageCount'
+		this.setData({
+			[param2]: 1,
+			[param3]: 0,
+			[param1]: []
+		})
+		this.loadTopicData()
+		//隐藏上方刷新
 		wx.hideNavigationBarLoading();
 		//停止下拉刷新
 		wx.stopPullDownRefresh();
@@ -174,6 +243,13 @@ Page({
 	 * 页面上拉触底事件的处理函数
 	 */
 	onReachBottom() {
+		if(this.data.typeList[this.data.active].wxTopics.length<this.data.typeList[this.data.active].pageCount){
+			//小于总数未加载完
+			this.loadTopicData()
+		}else{
+			console.log(true)
+		}
+		
 
 	},
 

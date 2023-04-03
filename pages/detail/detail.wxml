@@ -6,10 +6,12 @@
 <view wx:else >
 <view class="body">
 	<view style="text-align: center;font-size: large; font-weight: bold;">{{article.articleTitle}}</view>
-	<view style="text-align: left; margin-top: 20rpx;margin-bottom: 10rpx;" >
-	发布时间：{{article.createTime}} 
+	<view class="flex solid-bottom padding justify-between" style=" margin-top: 20rpx;margin-bottom: 10rpx;" >
+	
+	<view >发布时间：{{article.createTime}} </view>
+	<view >阅读量：{{article.articleFlows}}</view>
 	</view>
-	<!-- <view style="text-align: right;">发布者：{{article.createBy}}</view> -->
+	
 	<mp-html content="{{article.articleContent}}" />
 	<view class="bottom"></view>
 </view>

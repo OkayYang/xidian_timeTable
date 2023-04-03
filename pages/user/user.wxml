@@ -100,7 +100,9 @@
 						<view>
 						</view>
 					</view>
+					<i-load-more tip="{{loaddingText}}" loading="{{ loadding }}" />
 				</view>
+				
 				<view wx:else>
 					<van-empty image="error" description="暂无消息" />
 				</view>

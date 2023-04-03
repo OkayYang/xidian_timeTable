@@ -1,9 +1,11 @@
 {
     "pages": [
+			
+			"pages/index/index",
 			"pages/topic/topic",
 			"pages/user/user",
 				"pages/authorize/authorize",
-				"pages/index/index",
+			
 				"pages/detailTopic/detailTopic",
 				
 				"pages/edit/edit",
@@ -11,6 +13,7 @@
 				"pages/detail/detail"
 				
 		],
+		"lazyCodeLoading": "requiredComponents",
 		"tabBar": {
 			"selectedColor": "#3271ae",
 			"list": [

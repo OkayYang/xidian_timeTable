@@ -103,6 +103,13 @@ Page({
 		instance.close();
 
 	},
+	editbtn(){
+		Dialog.alert({
+			message: '开发者正在加班中。。。',
+		}).then(() => {
+			// on close
+		});
+	},
 
 	/**
 	 * 生命周期函数--监听页面加载
@@ -133,15 +140,18 @@ Page({
 				
 			},
 			fail: (res) => {
+				
 				Dialog.alert({
 						title: '提示',
 						message: '请先授权登录',
 					})
 					.then(() => {
-						this.loginbtn()
+						if(this.data.userInfo==null){
+							this.loginbtn()
+						}
+						
 					})
 					
-
 			}
 		})
 
@@ -198,10 +208,12 @@ Page({
 	onShow() {
 		if(this.token==null){
 			this.validLogin()
-		}
-		if(this.data.topics!=null){
+		}else{
+			
 			this.initData()
+			
 		}
+		
 		
 	},
 
@@ -223,6 +235,18 @@ Page({
 	 * 页面相关事件处理函数--监听用户下拉动作
 	 */
 	onPullDownRefresh() {
+		wx.showNavigationBarLoading();
+		//更新数据
+		Toast.loading({
+			duration: 800, 
+			message: '加载中...',
+			forbidClick: true,
+			loadingType: 'spinner',
+		});
+		this.initData()
+		wx.hideNavigationBarLoading();
+		//停止下拉刷新
+		wx.stopPullDownRefresh();
 
 	},
 

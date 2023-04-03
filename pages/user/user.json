@@ -9,5 +9,6 @@
 	"van-icon": "@vant/weapp/icon/index",
 	"i-load-more": "../../dist/load-more/index"
 	},
-	"navigationBarTitleText": "个人中心"
+	"navigationBarTitleText": "个人中心",
+	"enablePullDownRefresh": true
 }

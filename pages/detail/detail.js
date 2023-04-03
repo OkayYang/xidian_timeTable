@@ -17,7 +17,7 @@ Page({
 	 */
 	onLoad(options) {
 		Toast.loading({
-			duration: 1000, // 持续展示 toast
+			duration: 800, // 持续展示 toast
 			message: '加载中...',
 			forbidClick: true,
 			loadingType: 'spinner',
@@ -32,10 +32,13 @@ Page({
 							article:res.data.data
 						})
 					}
+				},
+				complete:(res)=>{
+					Toast.clear()
 				}
 			})
 		}
-		Toast.clear()
+		
 
 	},
 

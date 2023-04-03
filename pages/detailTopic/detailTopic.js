@@ -74,6 +74,7 @@ Page({
 
 	},
 	commentClick(e){
+		if(this.userInfo)
 		if(this.data.token!=null){
 			let replyUser = e.currentTarget.dataset.reply
 			this.setData({
@@ -172,6 +173,11 @@ Page({
 	},
 
 	ViewImage(e) {
+		let array = e.currentTarget.dataset.urls;
+		for (let index = 0; index < array.length; index++) {
+			array[index]=this.data.host+array[index]
+		}
+		//console.log(e)
 		wx.previewImage({
 			urls: e.currentTarget.dataset.urls,
 			current: e.currentTarget.dataset.url
@@ -281,7 +287,7 @@ Page({
 
 	initComment(tid) {
 		Toast({
-			duration: 1000,
+			duration: 800,
 			type: 'loading',
 			message: '加载中...',
 			onClose: () => {
@@ -313,7 +319,7 @@ Page({
 	},
 	initArticle(tid) {
 		Toast({
-			duration: 1000,
+			duration: 800,
 			type: 'loading',
 			message: '加载中...',
 			onClose: () => {
