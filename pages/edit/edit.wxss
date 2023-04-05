@@ -1,1 +1,7 @@
 /* pages/edit/edit.wxss */
+.jiawuvalue{
+	font-size: 25rpx;
+}
+.jiaowu{
+	color: red !important;
+}

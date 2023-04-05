@@ -1,0 +1,33 @@
+<!--pages/detail/detail.wxml-->
+<wxs src="../../utils/utils.wxs" module="utils" />
+<!-- 网络错误 -->
+<view wx:if="{{contest==null}}">
+	<van-empty image="network" description="网络异常" />
+</view>
+<view wx:else>
+	<view class="body">
+		<view style="text-align: center;font-size: large; font-weight: bold;">{{contest.contestName}}</view>
+		<view class="flex solid-bottom padding justify-between" style=" margin-top: 20rpx;margin-bottom: 10rpx;">
+
+			<view>发布时间：{{contest.createTime}} </view>
+			<view wx:if="{{contest.contestFlows!=null}}">浏览量：{{contest.contestFlows}}</view>
+		</view>
+
+		<mp-html  content="{{contest.contestDesc}}" />
+		<view style="margin-top: 80rpx;">
+			<van-button wx:if="{{contest.status==1}}" type="primary" block bind:click="contestEnroll" disabled>报名成功</van-button>
+		<van-button wx:if="{{contest.status==0&&utils.isInTimeRange(contest.contestTime)==0}}" type="primary" block data-id="{{contest.contestId}}" bind:click="contestEnroll" catchtap>立刻报名</van-button>
+		<van-button wx:if="{{contest.status==0&&utils.isInTimeRange(contest.contestTime)==-1}}" type="warning" block disabled>未开始</van-button>
+		<van-button wx:if="{{contest.status==0&&utils.isInTimeRange(contest.contestTime)==1}}" type="danger" block disabled>已结束</van-button>
+		</view>
+		
+		<view class="bottom"></view>
+	</view>
+
+
+</view>
+
+<van-toast id="van-toast" />
+<van-dialog id="van-dialog" />
+<!-- 在页面内添加对应的节点 -->
+<van-notify id="van-notify" />

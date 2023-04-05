@@ -7,7 +7,10 @@
       <view class="cu-item">
         <view class="cu-avatar round lg" style="background-image:url({{host+topic.uImage}});"></view>
         <view class="content flex-sub">
-          <view class="text-bold text-lg">{{topic.uNick}}</view>
+          <view class="text-bold text-lg">{{topic.uNick}}
+						<view style="height:30rpx;line-height:30rpx;" wx:if="{{topic.uType!=null}}" class="sm radius radius cu-tag bg-pink ">{{topic.uType}}</view>
+
+					</view>
           <view class="text-gray  flex justify-between">
             {{topic.createTime}}
           </view>
@@ -20,7 +23,8 @@
       {{topic.topicContent}}
     </view>
     <view class="grid flex-sub padding-lr col-2 grid-square">
-      <view  wx:if="{{topic.topicImages!=''}}"  class="bg-img {{utils.splitString(topic.topicImages).length==1?'only-img':''}}" 
+			<!-- {{utils.splitString(topic.topicImages).length==1?'only-img':''}} -->
+      <view  wx:if="{{topic.topicImages!=''}}"  class="bg-img " 
       style="background-image:url({{host+img}});" wx:for="{{utils.splitString(topic.topicImages)}}" wx:for-item="img" wx:key="{{img}}" bindtap="ViewImage"
 						data-url="{{host+img}}" data-urls="{{utils.splitString(topic.topicImages)}}"
       >

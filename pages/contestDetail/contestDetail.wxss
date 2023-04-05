@@ -1,0 +1,11 @@
+/* pages/detail/detail.wxss */
+page{
+	background-color: white;
+}
+.body{
+
+	width: 90%;
+	margin: auto;
+	margin-top: 30rpx;
+	padding-bottom: 40rpx;
+}

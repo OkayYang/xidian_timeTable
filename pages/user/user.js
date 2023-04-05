@@ -16,7 +16,7 @@ Page({
 		active: 0,
 		topics: null,
 		comments: null,
-		bisais: null,
+		contestList: null,
 		userInfo: null,
 		basics: 0,
 		token:null,
@@ -52,6 +52,7 @@ Page({
 		// });
 	},
 
+
 	loginbtn() {
 		wx.navigateTo({
 			url: '/pages/authorize/authorize',
@@ -60,7 +61,6 @@ Page({
 	onClose(event) {
 		const { position, instance } = event.detail;
 		//console.log(position)
-		
 		let tid = event.currentTarget.dataset.tid
 		let that = this
 		if(position=='right'){
@@ -104,11 +104,13 @@ Page({
 
 	},
 	editbtn(){
-		Dialog.alert({
-			message: '开发者正在加班中。。。',
-		}).then(() => {
-			// on close
-		});
+		let that =this
+		if(this.data.token!=null){
+			wx.navigateTo({
+				url: '/pages/edit/edit',
+				
+			})
+		}
 	},
 
 	/**
@@ -116,6 +118,7 @@ Page({
 	 */
 	onLoad(options) {
 		this.validLogin()
+		
 	},
 	validLogin(){
 		wx.getStorage({
@@ -156,6 +159,65 @@ Page({
 		})
 
 	},
+	detailContest(e){
+	let cid = e.currentTarget.dataset.cid
+		wx.navigateTo({
+			url: '/pages/contestDetail/contestDetail?cid='+cid,
+		})
+
+	},
+	strIsNull(str) {
+		if (str == null || str == '') {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	contestEnroll(e){
+		let id = e.currentTarget.dataset.id
+		if(this.data.token!=null){
+			let user = this.data.userInfo
+			if((!this.strIsNull(user.uXh)&&!this.strIsNull(user.uName)&&!this.strIsNull(user.uMajor)&&!this.strIsNull(user.uDepartment)&&!this.strIsNull(user.uClassname))||!this.strIsNull(user.remark)){
+				wx.request({
+					url: this.data.host+'/wx/contest/enroll/add?id='+id,
+					header:{
+						token:this.data.token
+					},
+					success:(res)=>{
+						if(res.data.code==200){
+							this.initData()
+							Notify({ type: 'success', message: '报名成功' });
+						}else{
+							Notify({ type: 'fail', message: '报名失败' });
+						}
+					},
+					fail:(res)=>{
+						Notify({ type: 'fail', message: '服务器异常' });
+					}
+				})
+			}else{
+				
+				Dialog.confirm({
+					title: '提示',
+					message: '请先完善教务信息后才可报名',
+				})
+					.then(() => {
+						wx.navigateTo({
+							url: '/pages/edit/edit',
+						})
+						// on confirm
+					})
+					.catch(() => {
+						// on cancel
+					});
+			}
+			
+		}else{
+			this.validLogin()
+		}
+		
+
+	},
 	initData() {
 		if (this.data.token != null) {
 			const token = this.data.token
@@ -188,6 +250,22 @@ Page({
 					}
 				}
 			})
+			wx.request({
+				url: this.data.host+'/wx/contest/list',
+				header:{
+					token:this.data.token
+				},
+				success:(res)=>{
+					//console.log(res)
+					if(res.data.code==200){
+						this.setData({
+							contestList:res.data.data
+						})
+
+					}
+				}
+			})
+			
 
 		}
 
@@ -198,6 +276,17 @@ Page({
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
 	onReady() {
+
+	},
+	freshUserData(){
+		wx.getStorage({
+			key:'user',
+			success:(res)=>{
+				this.setData({
+					userInfo:res.data
+				})
+			}
+		})
 
 	},
 
@@ -211,11 +300,9 @@ Page({
 		}else{
 			
 			this.initData()
-			
 		}
-		
-		
 	},
+	
 
 	/**
 	 * 生命周期函数--监听页面隐藏

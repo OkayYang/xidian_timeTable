@@ -10,7 +10,7 @@ Page({
 	 */
 	data: {
 		host: app.globalData.host,
-		token:null,
+		token: null,
 		topicTypeList: [],
 		imgList: [],
 		index: null,
@@ -42,7 +42,7 @@ Page({
 								that.setData({
 									imgList: that.data.imgList.concat(resp.data)
 								})
-							
+
 							}
 						},
 						fail: (res) => {
@@ -105,18 +105,20 @@ Page({
 		let topicImages = this.data.imgList.join(',')
 		let token = this.data.token
 		wx.request({
-			url: this.data.host+'/wx/topic/add',
-			method:'POST',
-			header:{
-				'token':token
+			url: this.data.host + '/wx/topic/add',
+			method: 'POST',
+			header: {
+				'token': token
 			},
-			data:{
-				content:content,
-				topicTypeId:topicTypeId,
-				topicImages:topicImages
+			data: {
+				content: content,
+				topicTypeId: topicTypeId,
+				topicImages: topicImages
 			},
-			success:(res)=>{
-				if(res.data.code==200){
+			success: (res) => {
+				if (res.data.code == 200) {
+					const eventChannel = this.getOpenerEventChannel()
+					eventChannel.emit('successSendEvent', { data: true });
 					Toast({
 						type: 'success',
 						message: '发布成功',
@@ -125,9 +127,15 @@ Page({
 						},
 					});
 				}
+				else if (res.data.code == 222) {
+					Notify({
+						type: 'warning',
+						message: '内容不能包含敏感词汇'
+					});
+				}
 				//console.log(res)
 			},
-			fail:(res)=>{
+			fail: (res) => {
 				Toast.fail(发布失败)
 				console.log(res)
 			}
@@ -143,9 +151,8 @@ Page({
 		wx.request({
 			url: this.data.host + '/wx/topic/type',
 			success: (res) => {
-			
 				if (res.data.code == 200) {
-					let data = res.data.data
+					let data = res.data.data.slice(1)
 					that.setData({
 						topicTypeList: data
 					})
@@ -153,7 +160,7 @@ Page({
 					for (let index = 0; index < data.length; index++) {
 						list.push(data[index].ttName)
 					}
-	
+
 					that.setData({
 						picker: list
 					})
@@ -165,15 +172,15 @@ Page({
 
 
 	},
-	validLogin(){
+	validLogin() {
 		wx.getStorage({
-			key:"token",
-			success:(res)=>{
+			key: "token",
+			success: (res) => {
 				this.setData({
-					token:res.data
+					token: res.data
 				})
 			},
-			fail:(res)=>{
+			fail: (res) => {
 				Dialog.confirm({
 					title: '提示',
 					message: '请先授权登录',

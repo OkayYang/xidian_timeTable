@@ -40,12 +40,19 @@
 					<view class="cu-item">
 						<view class="cu-avatar round lg" style="background-image:url({{host+topic.uImage}});"></view>
 						<view class="content flex-sub">
-							<view>{{topic.uNick}}</view>
+							<view>{{topic.uNick}}
+
+								<view style="height:30rpx;line-height:30rpx;" wx:if="{{topic.uType!=null}}" class="sm radius radius cu-tag bg-pink ">{{topic.uType}}</view>
+
+							</view>
 							<view class="text-gray text-sm flex justify-between">
 								{{utils.formatTime(topic.createTime)}}
 							</view>
 
+
 						</view>
+
+
 						<view class="text-content text-gray" style="margin-right: 30rpx;">#{{topic.ttName}}</view>
 					</view>
 				</view>
@@ -60,7 +67,7 @@
 				</view>
 				<view class="text-gray text-sm text-right padding">
 					<text class="cuIcon-attentionfill margin-lr-xs"></text> {{topic.topicFlows}}
-					<text class="cuIcon-appreciatefill margin-lr-xs"></text> {{topic.topicLikes}}
+					<!-- <text class="cuIcon-appreciatefill margin-lr-xs"></text> {{topic.topicLikes}} -->
 					<text class="cuIcon-messagefill margin-lr-xs"></text> {{topic.commentCount}}
 				</view>
 			</view>

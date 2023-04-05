@@ -45,7 +45,8 @@ Page({
 	},
 	detailTopic(event) {
 		wx.navigateTo({
-			url: '/pages/detailTopic/detailTopic?tid=' + event.currentTarget.dataset.tid,
+			url: '/pages/detailTopic/detailTopic?tid=' + event.currentTarget.dataset.tid
+			
 		})
 	},
 	addTopicBtn() {
@@ -55,9 +56,12 @@ Page({
 				url: '/pages/addTopic/addTopic',
 				events: {
 					// 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-					// acceptDataFromOpenedPage: function(data) {
-					// 	console.log(data)
-					// },	
+					successSendEvent: function(data) {
+						console.log(data.data)
+						if(data.data==true){
+							that.loadTopicType()
+						}
+					}
 				},
 				success: function (res) {
 					// 通过eventChannel向被打开页面传送数据
@@ -156,10 +160,11 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		this.setData({
-			active: 0,
-		})
-		//this.loadTopicData()
+		console.log("show")
+		// this.setData({
+		// 	active: 0,
+		// })
+		
 		wx.getStorage({
 			key: "token",
 			success: (res) => {
@@ -169,6 +174,7 @@ Page({
 				})
 			}
 		})
+		//this.loadTopicData()
 	},
 	loadTopicData() {
 		Toast.loading({

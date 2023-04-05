@@ -64,9 +64,33 @@ function findTypeName(id,list){
 }
 
 
+function isInTimeRange(contestTime) {
+
+	var timestamp = getDate().getTime(); //wxs中不能使用js中的Date()函数，只能使用getDate()来获取当前标准时间，getTime()函数可以用来将标准时间转换为时间戳，单位为ms
+	now = parseInt(timestamp / 1000);
+
+	var startTime = contestTime[0];
+	var endTime = contestTime[1];
+
+	var startStamp  = getDate(startTime).getTime();
+var start = parseInt(startStamp / 1000)
+
+var endStamp  = getDate(endTime).getTime();
+var end = parseInt(endStamp / 1000)
+  if (now < start) {
+    return -1; // 在时间范围前，返回-1
+  } else if (now > end) {
+    return 1; // 在时间范围后，返回1
+  } else {
+    return 0; // 在时间范围内，返回0
+  }
+}
+
+
 module.exports = {
 	splitString: splitString,
 	autoLayout: autoLayout,
 	formatTime: formatTime,
-	findTypeName:findTypeName
+	findTypeName:findTypeName,
+	isInTimeRange:isInTimeRange
 }

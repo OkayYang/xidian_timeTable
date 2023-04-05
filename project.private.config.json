@@ -3,9 +3,9 @@
 	"projectname": "jxustUserSys",
 	"setting": {
 		"compileHotReLoad": true,
-		"autoAudits": true,
+		"autoAudits": false,
 		"urlCheck": false,
 		"preloadBackgroundData": false
 	},
-	"libVersion": "2.27.3"
+	"libVersion": "2.30.3"
 }

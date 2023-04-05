@@ -23,9 +23,26 @@ Page({
 			loadingType: 'spinner',
 		});
 		let id = options.id;
+		let cid = options.cid;
 		if(id!=null){
 			wx.request({
 				url: this.data.host+'/wx/article/detail?id='+id,
+				success:(res)=>{
+					if(res.data.code==200){
+						this.setData({
+							article:res.data.data
+						})
+					}
+				},
+				complete:(res)=>{
+					Toast.clear()
+				}
+			})
+		}
+
+		if(cid!=null){
+			wx.request({
+				url: this.data.host+'/wx/contest/detail?cid='+cid,
 				success:(res)=>{
 					if(res.data.code==200){
 						this.setData({

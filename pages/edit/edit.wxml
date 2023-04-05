@@ -1,2 +1,67 @@
-<!--pages/edit/edit.wxml-->
-<text>pages/edit/edit.wxml</text>
+<!--index.wxml-->
+<view style="background-color: #f7f8fa;">
+    <view class="flex justify-center">
+			<view style="margin-top: 80rpx;">
+			<view style="margin-top: -30rpx;" bindtap="test">
+				<van-image round width="5rem" height="5rem" src="{{host+avatar}}" />
+			</view>
+		</view>
+    </view>
+    <view>
+			<view style="margin:0 auto;text-align: center;">
+					<button open-type="chooseAvatar" bind:chooseavatar="changeAvatar" class="cu-btn bg-blue margin-tb-sm ">点击修改头像</button>
+        </view>
+
+        <view style="margin-top: 40rpx;">
+            <view>
+                <van-cell-group inset>
+                    <van-cell data-id="1" data-name="" title="昵称" value="{{name==null?initName:name}}" is-link="true" bindtap="showNameDialog" />
+                    <picker mode="selector" range="{{sexColumns}}" value="{{sexIndex}}" bindchange="selectSex">
+                        <van-cell data-id="1" data-name="" title="性别" value="{{sex}}" is-link="true" />
+                    </picker>
+                    <van-cell data-id="1" data-name="" title="邮箱" value="{{email==null?initEmail:email}}" is-link="true" bindtap="showEmailDialog" />
+                    <van-cell data-id="1" data-name="" title="个性签名" value="{{signature==null?initSignature:signature}}" is-link="true" bindtap="showSignatureDialog" />
+                </van-cell-group>
+            </view>
+            <view style="margin-top: 30rpx;padding-bottom: 80rpx;">
+                <van-cell-group inset bindtap="tipUser">
+                    <van-cell center title="{{!checked?'编辑教务信息':'保存教务信息'}}" title-style="color:red">
+                        <van-switch checked="{{ checked  }}" bind:change="onSwitchChange" />
+                    </van-cell>
+                    <picker class="text-df" mode="multiSelector" bindchange="PickerChange" bindcolumnchange="PickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}" disabled="{{!checked}}">
+                        <van-cell  clickable="{{checked}}" is-link="{{checked}}" value-class="jiawuvalue" title-width="80rpx" title="学校" center value="{{school==null?initSchool:school}}"   required />
+                    </picker>
+
+                    <van-field readonly="{{!checked}}" value="{{ trueName }}" required clearable label="姓名" input-align="right" placeholder="请输入真实姓名" is-link="{{checked}}" bind:change="trueNameChange"  error-message-align="right"  error-message="{{msg.firstError}}"/>
+                    <view wx:if="{{multiArray[0][multiIndex[0]]!='其他'}}">
+                        <van-field type="number" maxlength="10" readonly="{{!checked}}" value="{{uXh}}" required clearable label="学号" input-align="right" placeholder="请输入学号" is-link="{{checked}}" bind:change="xhChange" error-message="{{msg.secondError}}" error-message-align="right" />
+                        <van-field readonly="{{!checked}}" value="{{ uClassname }}" required clearable label="班级" input-align="right" placeholder="请输入班级" is-link="{{checked}}" bind:change="classChange" error-message="{{msg.thirdError}}"  error-message-align="right"/>
+
+                    </view>
+                    <!-- <view wx:else>
+								<van-cell title="备注" is-link value="" />
+							</view> -->
+
+                </van-cell-group>
+            </view>
+            <van-dialog use-slot title="请输入昵称" show="{{ nameShow }}" show-cancel-button bind:cancel="onNameCancel" bind:confirm="onNameConfirm">
+                <van-field value="{{ tempName}}" placeholder="请输入需要修改的昵称" bind:change="onNameInput" />
+            </van-dialog>
+            <van-dialog use-slot title="请输入邮箱" show="{{ emailShow }}" show-cancel-button bind:cancel="onEmailCancel" bind:confirm="onEmailConfirm">
+                <van-field value="{{ tempEmail}}" placeholder="请输入需要修改的邮箱" bind:change="onEmailInput" />
+            </van-dialog>
+            <van-dialog use-slot title="请输入个性签名" show="{{ signatureShow }}" show-cancel-button bind:cancel="onSignatureCancel" bind:confirm="onSignatureConfirm">
+                <van-field value="{{ tempSignature}}" placeholder="请输入需要修改的个性签名" bind:change="onSignatureInput" />
+            </van-dialog>
+            <van-dialog use-slot title="请输入姓名" show="{{ trueNameShow }}" show-cancel-button bind:cancel="onTrueNameCancel" bind:confirm="onTrueNameConfirm">
+                <van-field value="{{ tempTrueName}}" placeholder="请输入需要修改的姓名" bind:change="onTrueNameInput" />
+            </van-dialog>
+        </view>
+    </view>
+</view>
+
+<!-- 在页面内添加对应的节点 -->
+<van-dialog id="van-dialog" />
+<van-toast id="van-toast" />
+<!-- 在页面内添加对应的节点 -->
+<van-notify id="van-notify" />

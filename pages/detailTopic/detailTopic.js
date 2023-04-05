@@ -14,18 +14,18 @@ Page({
 		topic: null,
 		comments: null,
 		InputBottom: 0,
-		showPopup:false,
+		showPopup: false,
 		placeholder: "我来说两句",
 		inputText: null,
-		userInfo:null,
-		commentParentId:0,
-		commentCount:0,
-		selectCommentId:null,
-		inputFocus:false,
-		token:null,
-		actions:[
+		userInfo: null,
+		commentParentId: 0,
+		commentCount: 0,
+		selectCommentId: null,
+		inputFocus: false,
+		token: null,
+		actions: [
 			{ name: '删除', color: '#e74c3c' },
-    ],
+		],
 
 	},
 	//获得焦距
@@ -42,10 +42,10 @@ Page({
 		// this.setData({
 		// 	InputBottom: e.detail.height,
 		// })
-		
-		if(!this.isNullOrWhiteSpace(this.data.inputText)){
+
+		if (!this.isNullOrWhiteSpace(this.data.inputText)) {
 			this.setData({
-				placeholder:null
+				placeholder: null
 			})
 		}
 	},
@@ -56,13 +56,12 @@ Page({
 			//placeholder: "我来说两句"
 		})
 	},
-	topicComment(){
-		if(!this.data.token!=null){
+	topicComment() {
+		if (!this.data.token != null) {
 			this.setData({
 				placeholder: "我来说两句",
-				commentParentId:0,
-				inputFocus:true,
-			
+				commentParentId: 0,
+				inputFocus: true,
 			})
 		}
 	},
@@ -73,26 +72,34 @@ Page({
 		})
 
 	},
-	commentClick(e){
-		if(this.userInfo)
-		if(this.data.token!=null){
-			let replyUser = e.currentTarget.dataset.reply
-			this.setData({
-				placeholder:"回复:"+replyUser.uNick,
-				commentParentId:replyUser.discussId,
-				inputFocus:true
-				
-			})
-		//console.log(replyUser)
+	commentClick(e) {
 
-		}else{
+		let replyUser = e.currentTarget.dataset.reply
+		console.log(replyUser)
+		if (this.data.token != null) {
+			if (this.data.userInfo.uid != replyUser.uid) {
+				this.setData({
+					placeholder: "回复:" + replyUser.uNick,
+					commentParentId: replyUser.discussId,
+					inputFocus: true
+				})
+			} else {
+				this.setData({
+					showPopup: true,
+					selectCommentId: replyUser.discussId,
+					inputFocus: false
+				});
+			}
+			//console.log(replyUser)
+
+		} else {
 			this.unLoginDialogTip()
 		}
-		
+
 
 	},
 	sendComment() {
-		if(this.data.token!=null){
+		if (this.data.token != null) {
 			if (!this.isNullOrWhiteSpace(this.data.inputText)) {
 				Toast({
 					duration: 1000,
@@ -104,37 +111,44 @@ Page({
 				});
 
 				wx.request({
-					url: this.data.host+'/wx/topic/detail/comment/add',
-					method:'POST',
-					header:{
-						token:this.data.token
+					url: this.data.host + '/wx/topic/detail/comment/add',
+					method: 'POST',
+					header: {
+						token: this.data.token
 					},
-					data:{
-						discussContent:this.data.inputText,
-						relateId:this.data.topicId,
-						parentId:this.data.commentParentId
+					data: {
+						discussContent: this.data.inputText,
+						relateId: this.data.topicId,
+						parentId: this.data.commentParentId
 					},
-					success:(res)=>{
+					success: (res) => {
 						console.log(res)
-						if(res.data.code==200){
+						if (res.data.code == 200) {
 							this.setData({
-								commentParentId:0,
-								discussContent:null,
-								placeholder:"我来说两句",
-								inputText:null
+								commentParentId: 0,
+								discussContent: null,
+								placeholder: "我来说两句",
+								inputText: null
 
 							})
 							this.initComment(this.data.topicId)
-							
+
 							Notify({ type: 'success', message: '评论成功' });
-						}else{
+						}
+						else if(res.data.code==222){
+							Notify({
+								type: 'warning',
+								message: '内容不能包含敏感词汇'
+							});
+						}
+						else {
 							Notify({ type: 'danger', message: '评论失败' });
 						}
 					},
-					fail:(res)=>{
+					fail: (res) => {
 						Notify({ type: 'danger', message: '服务器开小差了' });
 					},
-					complete:(res)=>{
+					complete: (res) => {
 						Toast.clear()
 					}
 				})
@@ -142,31 +156,31 @@ Page({
 			} else {
 				// 警告通知
 				this.setData({
-					inputText:null,
+					inputText: null,
 				})
 				Notify({ type: 'warning', message: '评论内容不能为空' });
 			}
 
-		}else{
+		} else {
 			this.unLoginDialogTip()
-		
+
 		}
-		
+
 
 	},
-	unLoginDialogTip(){
+	unLoginDialogTip() {
 		Dialog.confirm({
 			title: '提示',
 			message: '请先授权登录后再评论',
 		})
-		.then(() => {
-			wx.navigateTo({
-				url: '/pages/authorize/authorize',
+			.then(() => {
+				wx.navigateTo({
+					url: '/pages/authorize/authorize',
+				})
 			})
-		})
-		.catch(() => {
-			// on cancel
-		});
+			.catch(() => {
+				// on cancel
+			});
 	},
 	isNullOrWhiteSpace(str) {
 		return (!str || str.trim().length === 0);
@@ -175,7 +189,7 @@ Page({
 	ViewImage(e) {
 		let array = e.currentTarget.dataset.urls;
 		for (let index = 0; index < array.length; index++) {
-			array[index]=this.data.host+array[index]
+			array[index] = this.data.host + array[index]
 		}
 		//console.log(e)
 		wx.previewImage({
@@ -201,7 +215,7 @@ Page({
 				},
 			});
 		} else {
-			
+
 			this.getToken()
 			this.initArticle(tid)
 			this.initComment(tid)
@@ -209,81 +223,80 @@ Page({
 		}
 
 	},
-	getToken(){
+	getToken() {
 		wx.getStorage({
 			key: "user",
 			success: (res) => {
-				
+
 				this.setData({
 					//userInfo: JSON.parse(res.data)
-					userInfo:res.data
+					userInfo: res.data
 				})
 				wx.getStorage({
-					key:"token",
-					success:(res)=>{
+					key: "token",
+					success: (res) => {
 						this.setData({
-							token:res.data
+							token: res.data
 						})
 
 					}
 
 				})
-				
+
 			}
 		})
 
 	},
-	onCommentLongPress(e){
+	//长按评论
+	onCommentLongPress(e) {
 		console.log(e)
 		let uid = e.currentTarget.dataset.uid
 		let selectCommentId = e.currentTarget.dataset.reply.discussId
-
-
-		if((this.data.userInfo!=null&&this.data.userInfo.uid==uid)||this.data.userInfo.uid==this.data.topic.uid){
-			this.setData({ 
+		if ((this.data.userInfo != null && this.data.userInfo.uid == uid) || this.data.userInfo.uid == this.data.topic.uid) {
+			this.setData({
 				showPopup: true,
-				selectCommentId:selectCommentId,
-				inputFocus:false
-				
-			 });
+				selectCommentId: selectCommentId,
+				inputFocus: false
+			});
 		}
-		
+
 	},
 	onPopupClose() {
-    this.setData({ showPopup: false });
+		this.setData({ showPopup: false });
 	},
-	onPopupClick(e){
-		if(e.detail.name=="删除"&&this.data.selectCommentId!=null){
-			wx.request({
-				url: this.data.host+'/wx/topic/detail/comment/del/'+this.data.selectCommentId,
-				header:{
-					token:this.data.token
-				},
-				success:(res)=>{
-					if(res.data.code==200){
-						this.setData({ 
-							showPopup: false ,
-							selectCommentId:null
-						});
-						this.initComment(this.data.topicId)
-						Notify({ type: 'success', message: '删除评论成功' });
-					}else{
-						this.initComment(this.data.topicId)
-						Notify({ type: 'danger', message: '删除评论失败' });
-					}
-				},
-				fail:(res)=>{
-					Notify({ type: 'warning', message: '服务器异常' });
-				}
-			})
-		
+	onPopupClick(e) {
+		if (e.detail.name == "删除" && this.data.selectCommentId != null) {
+			this.delComment(this.data.selectCommentId)
 		}
-
+	},
+	delComment(cid) {
+		wx.request({
+			url: this.data.host + '/wx/topic/detail/comment/del/' + cid,
+			header: {
+				token: this.data.token
+			},
+			success: (res) => {
+				if (res.data.code == 200) {
+					this.setData({
+						showPopup: false,
+						selectCommentId: null
+					});
+					this.initComment(this.data.topicId)
+					Notify({ type: 'success', message: '删除评论成功' });
+				} else {
+					this.initComment(this.data.topicId)
+					Notify({ type: 'danger', message: '删除评论失败' });
+				}
+			},
+			fail: (res) => {
+				Notify({ type: 'warning', message: '服务器异常' });
+			}
+		})
 	},
 
-  onGetUserInfo(e) {
-    console.log(e.detail);
-  },
+	onGetUserInfo(e) {
+		console.log(e.detail);
+	},
 
 	initComment(tid) {
 		Toast({
@@ -299,17 +312,20 @@ Page({
 			success: (res) => {
 				if (res.data.code == 200) {
 					let data = res.data.data
-					let count =data.length
+					let count = data.length
 					for (let index = 0; index < data.length; index++) {
-						count+=data[index].childrenComments.length	
+						count += data[index].childrenComments.length
 					}
 					this.setData({
 						comments: data,
-						commentCount:count
+						commentCount: count
 					})
 
 				}
 
+			},
+			fail: (res) => {
+				Notify({ type: 'warning', message: '服务器异常' });
 			},
 			complete: (res) => {
 				Toast.clear()
@@ -355,7 +371,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		if(this.data.token==null){
+		if (this.data.token == null) {
 			this.getToken()
 		}
 

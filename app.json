@@ -1,16 +1,17 @@
 {
     "pages": [
-			
 			"pages/index/index",
+			"pages/edit/edit",
+			
 			"pages/topic/topic",
 			"pages/user/user",
 				"pages/authorize/authorize",
-			
+	
 				"pages/detailTopic/detailTopic",
-				
-				"pages/edit/edit",
+			
 				"pages/addTopic/addTopic",
-				"pages/detail/detail"
+				"pages/detail/detail",
+				"pages/contestDetail/contestDetail"
 				
 		],
 		"lazyCodeLoading": "requiredComponents",

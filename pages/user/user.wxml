@@ -108,22 +108,28 @@
 				</view>
 			</van-tab>
 			<van-tab title="参赛">
-				<view wx:if="{{bisais!=null}}" class="listCard">
-					<!-- <view class="card" wx:for="{{topics}}" wx:key="item">
-						<van-swipe-cell data-tid="{{item.topicId}}" right-width="{{ 65 }}" async-close bind:close="onClose" bind:click="clickBiSaiCard">
+				<view wx:if="{{contestList.length>0}}" class="listCard">
+					<view class="card" wx:for="{{contestList}}" wx:key="item">
+						<van-swipe-cell data-tid="{{item.topicId}}" right-width="{{ 65 }}" async-close bind:close="onClose" data-cid="{{item.contestId}}" bind:click="detailContest">
 							<van-cell-group>
-								<van-card centered="true">
+								<van-card thumb-mode="scaleToFill" thumb="{{item.contestCover!=''?host+item.contestCover:'/assets/images/topicImage.png'}}"  centered="true">
 									<view slot="title" style="font-size: larger;"><text style="font-weight: bold;">赛事：</text>软件工程学院程序设计大赛</view>
-									<view slot="footer" style="margin-top: 30rpx;">
-										<van-button type="info" size="mini" style="margin-right: 10rpx;">了解详细</van-button>
-										<van-button type="primary" size="mini">立刻报名</van-button>
+									<view slot="desc">报名时间：{{item.contestTime[0]}}~{{item.contestTime[1]}}</view>
+									<view slot="footer">
+
+										<van-button type="info" size="mini" style="margin-right: 10rpx;" data-cid="{{item.contestId}}" bind:click="detailContest" catchtap>了解详细</van-button>
+										<van-button wx:if="{{item.status==1}}" type="primary" size="mini" disabled>报名成功</van-button>
+
+										<van-button wx:if="{{item.status==0&&utils.isInTimeRange(item.contestTime)==0}}" type="primary" size="mini" data-id="{{item.contestId}}" bind:click="contestEnroll" catchtap>立刻报名</van-button>
+										<van-button wx:if="{{item.status==0&&utils.isInTimeRange(item.contestTime)==-1}}" type="warning" size="mini" disabled >未开始</van-button>
+										<van-button wx:if="{{item.status==0&&utils.isInTimeRange(item.contestTime)==1}}" type="danger" size="mini" disabled >已结束</van-button>
 									</view>
 								</van-card>
 							</van-cell-group>
 							<view slot="right" class="van-swipe-cell__right">删除</view>
 						</van-swipe-cell>
 					</view>
-					<i-load-more tip="{{loaddingText}}" loading="{{ loadding }}" /> -->
+					<i-load-more tip="{{loaddingText}}" loading="{{ loadding }}" />
 				</view>
 				<view wx:else>
 					<van-empty image="search" description="当前没有可报赛事" />
