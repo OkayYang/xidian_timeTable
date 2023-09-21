@@ -5,7 +5,9 @@
 		"my-swiper":"../../dist/my-swiper/index",
 		"van-tab": "@vant/weapp/tab/index",
 	"van-tabs": "@vant/weapp/tabs/index",
-	"mp-html": "mp-html"
+	"mp-html": "mp-html",
+	"van-cell": "@vant/weapp/cell/index",
+	"van-cell-group": "@vant/weapp/cell-group/index"
 	},
 	"navigationBarTitleText": "首页",
 	"enablePullDownRefresh": true

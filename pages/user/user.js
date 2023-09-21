@@ -55,7 +55,8 @@ Page({
 
 	loginbtn() {
 		wx.navigateTo({
-			url: '/pages/authorize/authorize',
+			//url: '/pages/authorize/authorize',
+			url:'/pages/login/login'
 		})
 	},
 	onClose(event) {
@@ -103,6 +104,7 @@ Page({
 		instance.close();
 
 	},
+	
 	editbtn(){
 		let that =this
 		if(this.data.token!=null){

@@ -107,7 +107,7 @@
 					<van-empty image="error" description="暂无消息" />
 				</view>
 			</van-tab>
-			<van-tab title="参赛">
+			<!-- <van-tab title="参赛">
 				<view wx:if="{{contestList.length>0}}" class="listCard">
 					<view class="card" wx:for="{{contestList}}" wx:key="item">
 						<van-swipe-cell data-tid="{{item.topicId}}" right-width="{{ 65 }}" async-close bind:close="onClose" data-cid="{{item.contestId}}" bind:click="detailContest">
@@ -134,7 +134,7 @@
 				<view wx:else>
 					<van-empty image="search" description="当前没有可报赛事" />
 				</view>
-			</van-tab>
+			</van-tab> -->
 		</van-tabs>
 
 	</view>

@@ -7,6 +7,7 @@ Page({
 
 	data: {
 		host: app.globalData.host,
+		firstOpen:false,
 		avatar: null,
 		name: null,
 		sex: '未设置',
@@ -32,49 +33,90 @@ Page({
 		trueName: null,
 		uXh: null,
 		uClassname: null,
-		
+		//三个错误信息
+		msg: {
+			firstError: null,
+			secondError: null,
+			thirdError: null,
+			first: false,
+			second: false,
+			third: false,
+		},
 
 		//级联属性
+
+		multiArray: [
+			['江西理工大学', '其他'],
+			['稀土学院',
+				'土木与测绘工程学院',
+				'材料冶金化学学部',
+				'电气工程与自动化学院',
+				'信息工程学院(人工智能学院)',
+				'经济管理学院(质量学院)',
+				'法学院',
+				'应急管理与安全工程学院',
+				'理学院',
+				'基础课教学部(南昌)',
+				'继续教育与培训学院',
+				'国际教育学院',
+				'资源与环境工程学院',
+				'建筑与设计学院',
+				'机电工程学院（汽车工程学院)',
+				'能源与机械工程学院(南昌)',
+				'软件工程学院(土测学院南昌)',
+				'商学院(南昌)',
+				'马克思主义学院',
+				'外国语学院',
+				'先进铜产业学院',
+				'应用科学学院',
+				'创新创业学院',
+			]
+		],
+		multiIndex: [0, 0],
+		arrColumn0: ['稀土学院',
+			'土木与测绘工程学院',
+			'材料冶金化学学部',
+			'电气工程与自动化学院',
+			'信息工程学院(人工智能学院)',
+			'经济管理学院(质量学院)',
+			'法学院',
+			'应急管理与安全工程学院',
+			'理学院',
+			'基础课教学部(南昌)',
+			'继续教育与培训学院',
+			'国际教育学院',
+			'资源与环境工程学院',
+			'建筑与设计学院',
+			'机电工程学院（汽车工程学院)',
+			'能源与机械工程学院(南昌)',
+			'软件工程学院(土测学院南昌)',
+			'商学院(南昌)',
+			'马克思主义学院',
+			'外国语学院',
+			'先进铜产业学院',
+			'应用科学学院',
+			'创新创业学院',
+		],
+		arrColumn1: ['其他学校'],
 		userInfo: null,
 		token: null,
 		form: {
+			uSex: null,
 			uNick: null,
 			uImage: null,
 			uEmail: null,
 			uDesc: null,
-
+			uDepartment: null, //大学
+			uMajor: null, //学院
+			uClassname: null, //班级
+			remark: null, //非本校
+			uName: null,
+			uXh: null
 		}
 
 	},
-	loginout(){
-		Dialog.confirm({
-			title: '提示',
-			message: '是否退出登录',
-		  })
-			.then(() => {
-				wx.clearStorage({
-					success:(res)=>{
-						Toast({
-							type: 'success',
-							message: '退出成功',
-							onClose: () => {
-							  wx.switchTab({
-								url: '/pages/index/index',
-							  })
-							},
-						  });
-					}
-				})
-		
-			  // on confirm
-			})
-			.catch(() => {
-			  // on cancel
-			});
-		
-	},
 
-	changeAvatar(e) {
+	changeAvatar(e){
 		const {
 			avatarUrl
 		} = e.detail
@@ -82,14 +124,14 @@ Page({
 		wx.uploadFile({
 			filePath: avatarUrl,
 			name: 'file',
-			url: this.data.host + '/wx/file/upload',
+			url:  this.data.host+'/wx/file/upload',
 			success: (res) => {
 				let resp = JSON.parse(res.data)
 				if (resp.code == 200) {
 					console.log(resp.data)
 					this.setData({
 						avatar: resp.data,
-						['form.uImage']: resp.data
+						['form.uImage']:resp.data
 					})
 					this.editUserRequest()
 				}
@@ -102,9 +144,23 @@ Page({
 	},
 
 
+	selectSchool(e) {
+		this.setData({
+			school: this.data.schoolColumns[e.detail.value],
+		})
+		if (e.datil.value == 0) {
+		}
+	},
+
+
 	sexOnCancel() {
 		Toast('取消');
 	},
+	schoolOnCancel() {
+		Toast('取消');
+	},
+
+
 
 	///
 	showNameDialog() {
@@ -142,8 +198,34 @@ Page({
 			Toast.fail("格式错误")
 		}
 	},
-	
-	
+	trueNameChange(e) {
+		this.setData({
+			trueName: e.detail,
+			['msg.firstError']: this.strIsNull(e.detail) ? "姓名未填写" : ""
+
+		})
+	},
+	xhChange(e) {
+		this.setData({
+			uXh: e.detail,
+			['msg.secondError']: e.detail.length == 0 ? "学号未填写" : ""
+		})
+	},
+	classChange(e) {
+		this.setData({
+			uClassname: e.detail,
+			['msg.thirdError']: this.strIsNull(e.detail) ? "班级未填写" : null
+		})
+	},
+	freshUserData() {
+		wx.getStorage({
+			key: "user",
+			success: (res) => {
+
+			}
+		})
+
+	},
 	editUserRequest() {
 		wx.request({
 			url: this.data.host + '/wx/user/edit',
@@ -159,7 +241,7 @@ Page({
 					this.freshUserStorage()
 
 				}
-				else if (res.data.code == 222) {
+				else if(res.data.code==222){
 					Notify({
 						type: 'warning',
 						message: '内容不能包含敏感词汇'
@@ -215,7 +297,7 @@ Page({
 									uXh: data.uXh,
 									uClassname: data.uClassname,
 									school: school,
-									avatar: data.uImage
+									avatar:data.uImage
 
 								})
 								Notify({
@@ -323,6 +405,48 @@ Page({
 		var emailRegExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; //验证邮箱的正则表达式
 		return emailRegExp.test(email); //验证是否符合要求
 	},
+	//级联函数
+	PickerChange(e) {
+		var value = e.detail.value
+		var department = this.data.multiArray[0][value[0]];
+		var major = this.data.multiArray[1][value[1]];
+		var uXh = this.data.uXh;
+		var uClassname = this.data.uClassname;
+		this.setData({
+			multiIndex: value,
+			department: department,
+			major: major,
+			uXh: department != '其他' ? uXh : null,
+			uClassname: department != '其他' ? uClassname : null,
+			school: department + '-' + major
+		})
+		console.log(department)
+
+		if("其他"==department){
+			console.log(department)
+			this.setData({
+				['msg.secondError']:null,
+				['msg.thirdError']:null,
+			})
+		}
+		console.log(this.data.multiArray[0][value[0]], this.data.multiArray[1][value[1]])
+	},
+	PickerColumnChange(e) {
+		// 先定义数据，数组里面两个数组，意为两列，当第一列发生改变时侯，给数组重新赋值
+		var obj = e.detail
+		var multiArray = this.data.multiArray
+		if (obj.column == 0 && obj.value == 0) {
+			multiArray[1] = this.data.arrColumn0
+		}
+		if (obj.column == 0 && obj.value == 1) {
+			multiArray[1] = this.data.arrColumn1
+		}
+
+		this.setData({
+			multiArray: multiArray,
+
+		})
+	},
 	resetForm() {
 		this.setData({
 			form: {
@@ -340,8 +464,75 @@ Page({
 			}
 		})
 	},
-	
+	resetMsg() {
+		this.setData({
+			msg: {
+				firstError: '',
+				secondError: '',
+				thirdError: '',
+				first: false,
+				second: false,
+				third: false,
+			},
+		})
+	},
+	onSwitchChange({ detail }) {
+		// 需要手动对 checked 状态进行更新
+		console.log(detail);
+		this.setData({
+			checked: true
+		});
+		var department = this.data.department;
+		var major = this.data.major;
+		var checked = this.data.checked;
+		var name = this.data.trueName;
+		var classname = this.data.uClassname;
+		var xh = this.data.uXh;
+		if (checked == true) {
+			this.setData({
+				['msg.firstError']: this.strIsNull(name) ? "姓名未填写" : null
+			})
+			if("其他"!=department){
+				this.setData({
+					['msg.secondError']: xh == null ? "学号未填写" : null,
+				})
+				this.setData({
+					['msg.thirdError']: this.strIsNull(classname) ? "班级未填写" : null,
+				})
+			}
+			
+		}
+		
+		
+		console.log("detail"+detail)
+		if (this.data.msg.firstError == null && this.data.msg.secondError == null && this.data.msg.thirdError == null&&!detail)
+		{
+			this.setData({
+				checked: false,
+				['form.uName']: this.data.trueName,
+				['form.uClassname']: this.data.uClassname,
+				['form.uXh']: this.data.uXh,
+				['form.uDepartment']: department != '其他' ? department : null,
+				['form.uMajor']: department != '其他' ? major : null,
+				['form.remark']: department != '其他' ? null : '其他-其他学校'
+			})
+			this.editUserRequest()
+		}
+	},
 
+	tipUser(){
+		if(this.data.firstOpen==false){
+			Dialog.alert({
+				title: '重要提示',
+				message: '请先打开编辑教务信息按钮进行编辑，编辑完成后需点击按钮进行保存！',
+			}).then(() => {
+				this.setData({
+					firstOpen:true
+				})
+			});
+
+		}
+	},
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
@@ -359,7 +550,7 @@ Page({
 					trueName: res.data.uName,
 					uXh: res.data.uXh,
 					uClassname: res.data.uClassname,
-					avatar: res.data.uImage
+					avatar:res.data.uImage
 				})
 				console.log(res)
 				let sex = this.sextoString(res.data.uSex)
@@ -372,11 +563,11 @@ Page({
 				}
 				console.log(school)
 				this.setData({
-					sex: sex,
-					school: school
+					sex:sex,
+					school:school
 				})
 				//console.log(school)
-
+				
 				wx.getStorage({
 					key: "token",
 					success: (res) => {

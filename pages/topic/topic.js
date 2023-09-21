@@ -75,7 +75,8 @@ Page({
 			})
 				.then(() => {
 					wx.navigateTo({
-						url: '/pages/authorize/authorize',
+						//url: '/pages/authorize/authorize',
+						url:'/pages/login/login'
 					})
 				})
 				.catch(() => {

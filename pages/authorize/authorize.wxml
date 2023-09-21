@@ -1,8 +1,10 @@
 <!--pages/authorize/authorize.wxml-->
 <van-empty image="/assets/images/login.png" description="点击授权获得你的公开信息（昵称、头像）">
   <view class="padding flex flex-direction">
-  
-  <button  open-type="chooseAvatar" bind:chooseavatar="login" style="width: 600rpx;" class="cu-btn bg-blue margin-tb-sm lg">微信授权登录</button>
+	
+    <button bindtap="wxlogin"   style="width: 600rpx;" class="cu-btn bg-blue margin-tb-sm lg">微信授权登录</button>
+
+  <!-- <button   open-type="chooseAvatar" bind:chooseavatar="login" style="width: 600rpx;" class="cu-btn bg-blue margin-tb-sm lg">微信授权登录</button> -->
 </view>
 </van-empty>
 

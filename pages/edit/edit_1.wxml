@@ -1,15 +1,15 @@
 <!--index.wxml-->
 <view style="background-color: #f7f8fa;">
     <view class="flex justify-center">
-        <view style="margin-top: 80rpx;">
-            <view style="margin-top: -30rpx;" bindtap="test">
-                <van-image round width="5rem" height="5rem" src="{{host+avatar}}" />
-            </view>
-        </view>
+			<view style="margin-top: 80rpx;">
+			<view style="margin-top: -30rpx;" bindtap="test">
+				<van-image round width="5rem" height="5rem" src="{{host+avatar}}" />
+			</view>
+		</view>
     </view>
     <view>
-        <view style="margin:0 auto;text-align: center;">
-            <button open-type="chooseAvatar" bind:chooseavatar="changeAvatar" class="cu-btn bg-blue margin-tb-sm ">点击修改头像</button>
+			<view style="margin:0 auto;text-align: center;">
+					<button open-type="chooseAvatar" bind:chooseavatar="changeAvatar" class="cu-btn bg-blue margin-tb-sm ">点击修改头像</button>
         </view>
 
         <view style="margin-top: 40rpx;">
@@ -25,14 +25,22 @@
             </view>
             <view style="margin-top: 30rpx;padding-bottom: 80rpx;">
                 <van-cell-group inset bindtap="tipUser">
-
-                    <van-cell center title="{{'[教务信息]'}}" title-style="color:red">
+                    <van-cell center title="{{!checked?'编辑教务信息':'保存教务信息'}}" title-style="color:red">
+                        <van-switch checked="{{ checked  }}" bind:change="onSwitchChange" />
                     </van-cell>
-                    <van-cell value-class="jiawuvalue" title-width="80rpx" title="学校" center value="{{'西安电子科技大学'}}" />
-                    <van-cell value-class="jiawuvalue" title-width="80rpx" title="学院" center value="{{school}}" />
-                    <van-cell value-class="jiawuvalue" title-width="80rpx" title="姓名" center value="{{trueName}}" />
-                    <van-cell value-class="jiawuvalue" title-width="80rpx" title="学号" center value="{{uXh}}" />
+                    <picker class="text-df" mode="multiSelector" bindchange="PickerChange" bindcolumnchange="PickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}" disabled="{{!checked}}">
+                        <van-cell  clickable="{{checked}}" is-link="{{checked}}" value-class="jiawuvalue" title-width="80rpx" title="学校" center value="{{school==null?initSchool:school}}"   required />
+                    </picker>
 
+                    <van-field readonly="{{!checked}}" value="{{ trueName }}" required clearable label="姓名" input-align="right" placeholder="请输入真实姓名" is-link="{{checked}}" bind:change="trueNameChange"  error-message-align="right"  error-message="{{msg.firstError}}"/>
+                    <view wx:if="{{multiArray[0][multiIndex[0]]!='其他'}}">
+                        <van-field type="number" maxlength="10" readonly="{{!checked}}" value="{{uXh}}" required clearable label="学号" input-align="right" placeholder="请输入学号" is-link="{{checked}}" bind:change="xhChange" error-message="{{msg.secondError}}" error-message-align="right" />
+                        <van-field readonly="{{!checked}}" value="{{ uClassname }}" required clearable label="班级" input-align="right" placeholder="请输入班级" is-link="{{checked}}" bind:change="classChange" error-message="{{msg.thirdError}}"  error-message-align="right"/>
+
+                    </view>
+                    <!-- <view wx:else>
+								<van-cell title="备注" is-link value="" />
+							</view> -->
 
                 </van-cell-group>
             </view>
@@ -48,18 +56,9 @@
             <van-dialog use-slot title="请输入姓名" show="{{ trueNameShow }}" show-cancel-button bind:cancel="onTrueNameCancel" bind:confirm="onTrueNameConfirm">
                 <van-field value="{{ tempTrueName}}" placeholder="请输入需要修改的姓名" bind:change="onTrueNameInput" />
             </van-dialog>
-
         </view>
-        
     </view>
-    
 </view>
-<!-- <view style="width: 90%;margin: auto;margin-bottom: 300rpx;">
-    <van-button bind:click="loginout" round type="danger" block>退出登录</van-button>
-
-</view> -->
-
-
 
 <!-- 在页面内添加对应的节点 -->
 <van-dialog id="van-dialog" />

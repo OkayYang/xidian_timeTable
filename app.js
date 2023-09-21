@@ -1,7 +1,8 @@
 // app.js
 App({
 	globalData: {
-		host:"https://jxust.ywenrou.cn",
-		//host:"http://192.168.3.254:8080"
+		host:"https://xdu.ywenrou.cn",
+		//host:"http://localhost:8080",
+		//host:"http://192.168.137.1:8080"
 	},
 })

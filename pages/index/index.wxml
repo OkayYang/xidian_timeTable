@@ -1,40 +1,46 @@
 <!--index.wxml-->
-<van-notice-bar left-icon="volume-o" scrollable mode="link" text="{{rollText}}" />
-<my-swiper list="{{swiperList}}" bind:swiperClick="articleClick" />
 
-<van-tabs active="{{ active }}" bind:change="onChange">
-		<van-tab wx:for="{{typeList}}"  wx:key="item" title="{{item.name}}" data-id="{{item.atpId}}">
-			<view class="warper">
-				<!-- <view class="card">
-				<view class="article">
-					<view class="title">我校召开2022年度志愿服务工作总结</view>
-				</view>
-			</view> -->
-				<view class="cu-card article" wx:for="{{item.ncArticles}}" wx:for-item="article" wx:key="{{article}}" data-id="{{article.articleId}}" bindtap="articleClick">
-				
-					<view class="cu-item shadow">
-						<view class="title">
-							<view class="text-cut">{{article.articleTitle}}</view>
-						</view>
-						<view class="content">
-							<image src="{{host+article.articleCover}}" mode="aspectFill"></image>
-							<view class="desc" style="width: 50%;">
-								<view class="text-content"> <mp-html content="{{article.articleContent}}" /></view>
-								<view>
-          <view wx:if="{{item.name=='竞赛'}}" class="cu-tag bg-red light sm round">竞赛类</view>
-          <view wx:if="{{item.name=='新闻'}}" class="cu-tag bg-green light sm round">新闻类</view>
+<view class="top">
+    <van-notice-bar left-icon="volume-o" scrollable mode="link" text="{{rollText}}" />
+    <my-swiper list="{{swiperList}}" bind:swiperClick="articleClick" />
+</view>
+
+
+<view style="width: 95%; margin:30rpx auto;">
+    <van-cell-group>
+        <van-cell size="large" icon="bars" title="今日课程" border="{{false}}" value="{{result}}">
+        </van-cell>
+        <view wx:if="{{token!=null}}">
+        <view wx:if="{{kcb.length==0}}">
+        <view style="font-size: larger;margin-top: 30rpx;text-align: center;padding: 30rpx;">
+            <text>今日没课放松一下吧！</text>
         </view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<i-load-more tip="暂无数据" loading="{{ false }}" />
-			</view>
+            
+        </view>
+        <view wx:else>
+            <view  wx:for="{{kcb}}" wx:key="{{item}}"  style="color: black;">
+            
+                <van-cell size="large" title="{{item.KCMC}}" value="{{item.JASMC}}" label="{{item.ZCMC+','+item.JSJCDM}}" />
+            </view>
+        </view>
+            
+        </view>
+        <view wx:else>
+            <view style="font-size: larger;margin-top: 30rpx;text-align: center;padding: 30rpx;">
+                <text>绑定教务后可以查看课表,</text><text bind:tap="bindxdu" style="color: #4d97f7;">点击绑定</text>
+            </view>
+        </view>
 
-		</van-tab>
 
 
-</van-tabs>
+    </van-cell-group>
+</view>
+
+
+
+
+
+
 <van-toast id="van-toast" />
 
 <!-- <i-load-more /> -->

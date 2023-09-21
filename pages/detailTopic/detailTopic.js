@@ -175,7 +175,8 @@ Page({
 		})
 			.then(() => {
 				wx.navigateTo({
-					url: '/pages/authorize/authorize',
+					//url: '/pages/authorize/authorize',
+					url:'/pages/login/login'
 				})
 			})
 			.catch(() => {
@@ -270,28 +271,39 @@ Page({
 		}
 	},
 	delComment(cid) {
-		wx.request({
-			url: this.data.host + '/wx/topic/detail/comment/del/' + cid,
-			header: {
-				token: this.data.token
-			},
-			success: (res) => {
-				if (res.data.code == 200) {
-					this.setData({
-						showPopup: false,
-						selectCommentId: null
-					});
-					this.initComment(this.data.topicId)
-					Notify({ type: 'success', message: '删除评论成功' });
-				} else {
-					this.initComment(this.data.topicId)
-					Notify({ type: 'danger', message: '删除评论失败' });
-				}
-			},
-			fail: (res) => {
-				Notify({ type: 'warning', message: '服务器异常' });
-			}
+		Dialog.confirm({
+			title: '提示',
+			message: '确认要删除评论？',
 		})
+			.then(() => {
+				wx.request({
+					url: this.data.host + '/wx/topic/detail/comment/del/' + cid,
+					header: {
+						token: this.data.token
+					},
+					success: (res) => {
+						if (res.data.code == 200) {
+							this.setData({
+								showPopup: false,
+								selectCommentId: null
+							});
+							this.initComment(this.data.topicId)
+							Notify({ type: 'success', message: '删除评论成功' });
+						} else {
+							this.initComment(this.data.topicId)
+							Notify({ type: 'danger', message: '删除评论失败' });
+						}
+					},
+					fail: (res) => {
+						Notify({ type: 'warning', message: '服务器异常' });
+					}
+				})
+				// on confirm
+			})
+			.catch(() => {
+				// on cancel
+			});
+		
 	},
 
 	onGetUserInfo(e) {

@@ -1,7 +1,10 @@
 {
     "pages": [
 			"pages/index/index",
+			"pages/login/login",
 			"pages/edit/edit",
+			
+		
 			
 			"pages/topic/topic",
 			"pages/user/user",
@@ -12,6 +15,7 @@
 				"pages/addTopic/addTopic",
 				"pages/detail/detail",
 				"pages/contestDetail/contestDetail"
+				
 				
 		],
 		"lazyCodeLoading": "requiredComponents",

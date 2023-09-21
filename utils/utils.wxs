@@ -87,10 +87,14 @@ var end = parseInt(endStamp / 1000)
 }
 
 
+
+
+
 module.exports = {
 	splitString: splitString,
 	autoLayout: autoLayout,
 	formatTime: formatTime,
 	findTypeName:findTypeName,
 	isInTimeRange:isInTimeRange
+	
 }
