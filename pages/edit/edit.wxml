@@ -25,19 +25,16 @@
             </view>
             <view style="margin-top: 30rpx;padding-bottom: 80rpx;">
                 <van-cell-group inset bindtap="tipUser">
-
                     <van-cell center title="{{'[教务信息]'}}" title-style="color:red">
                     </van-cell>
                     <van-cell value-class="jiawuvalue" title-width="80rpx" title="学校" center value="{{'西安电子科技大学'}}" />
                     <van-cell value-class="jiawuvalue" title-width="80rpx" title="学院" center value="{{school}}" />
                     <van-cell value-class="jiawuvalue" title-width="80rpx" title="姓名" center value="{{trueName}}" />
                     <van-cell value-class="jiawuvalue" title-width="80rpx" title="学号" center value="{{uXh}}" />
-
-
                 </van-cell-group>
             </view>
             <van-dialog use-slot title="请输入昵称" show="{{ nameShow }}" show-cancel-button bind:cancel="onNameCancel" bind:confirm="onNameConfirm">
-                <van-field value="{{ tempName}}" placeholder="请输入需要修改的昵称" bind:change="onNameInput" />
+                <van-field type="nickname" value="{{ tempName}}" placeholder="请输入需要修改的昵称" bind:change="onNameInput" />
             </van-dialog>
             <van-dialog use-slot title="请输入邮箱" show="{{ emailShow }}" show-cancel-button bind:cancel="onEmailCancel" bind:confirm="onEmailConfirm">
                 <van-field value="{{ tempEmail}}" placeholder="请输入需要修改的邮箱" bind:change="onEmailInput" />
@@ -54,10 +51,12 @@
     </view>
     
 </view>
-<!-- <view style="width: 90%;margin: auto;margin-bottom: 300rpx;">
-    <van-button bind:click="loginout" round type="danger" block>退出登录</van-button>
 
-</view> -->
+
+<view style="width: 90%;margin: auto;margin-bottom: 300rpx;">
+    <van-button type="primary" plain  bind:click="loginout"  type="danger" block>退出登录</van-button>
+</view>
+
 
 
 

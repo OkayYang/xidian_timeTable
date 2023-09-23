@@ -58,9 +58,11 @@ Page({
 							type: 'success',
 							message: '退出成功',
 							onClose: () => {
-							  wx.switchTab({
-								url: '/pages/index/index',
-							  })
+								wx.restartMiniProgram({
+									path:'/pages/index/index',
+								})
+							
+							 
 							},
 						  });
 					}

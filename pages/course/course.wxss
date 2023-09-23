@@ -1,0 +1,115 @@
+/**index.wxss**/
+page{
+  background-color: white;
+  
+}
+.flex-item {
+    width: 95rpx;
+    height: 100px;
+  }
+  .weekitem{
+    width: 95rpx;
+  }
+  
+  .kcb-item {
+    position: absolute;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+  }
+  
+  .smalltext {
+    font-size: 8pt;
+    color: #fff;
+    
+    text-align: center;
+  }
+  
+  .top {
+    display: flex;
+    flex-direction: row;
+    padding-left: 60rpx;
+    background-color: #fbfbfb;
+    color: black;
+  }
+  
+  .top-text {
+    width: 100rpx;
+    height: 70rpx;
+    font-size: 9pt;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+  
+  .scroll {
+    height: 1170rpx;
+    position: fixed;
+    
+  }
+  
+  .left {
+    width: 60rpx;
+    height: 100rpx;
+    font-size: 9pt;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+  
+  
+.week-list__popup {
+  padding: 40rpx;
+}
+
+.week-list__popup .week-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.week-list__popup .week-item {
+  width: calc(90% / 5);
+  height: 100rpx;
+  border-radius: 18rpx;
+  background-color: #f2f3f4;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20rpx;
+  font-size: 28rpx;
+}
+
+.week-list__popup .week-item.this-week {
+  color: var(--theme);
+}
+
+.week-list__popup .week-item.active {
+  background-color: var(--theme);
+  color: #fff;
+}
+
+.select_week {
+  background: transparent;
+  position: relative;
+  color: var(--black);
+  height: 32px;
+  z-index: 1000;
+  font-size: 16px;
+}
+.week_num {
+  position: relative;
+  color: #fff;
+  justify-content: center;
+  display: flex;
+  height: 100%;
+  line-height: 32px;
+}
+.backPage {
+  position: absolute;
+  left: 20rpx;
+
+}

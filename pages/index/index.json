@@ -7,8 +7,11 @@
 	"van-tabs": "@vant/weapp/tabs/index",
 	"mp-html": "mp-html",
 	"van-cell": "@vant/weapp/cell/index",
-	"van-cell-group": "@vant/weapp/cell-group/index"
+	"van-cell-group": "@vant/weapp/cell-group/index",
+	"cu-custom": "/colorui/components/cu-custom"
 	},
 	"navigationBarTitleText": "首页",
-	"enablePullDownRefresh": true
+	"enablePullDownRefresh": true,
+	"navigationStyle": "custom"
+	
 }

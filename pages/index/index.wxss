@@ -1,7 +1,35 @@
 /**index.wxss**/
+@import "/colorui/icon.wxss";
 
 .warper{
 	padding-bottom: 30rpx;
 	width: 100%;
 	background-color: #ececec;
 }
+.value-cell{
+	color: black !important;
+}
+.add_tips {
+	position: absolute;
+	right: 5px;
+	padding: 4px 10px;
+	background: #1380ff;
+	color: #fff;
+	border-radius: 4px;
+	z-index: 9999;
+  }
+  .add_tips .icon-close {
+	padding: 10px 2px;
+  }
+  
+  .add_tips::before {
+	content: " ";
+	position: absolute;
+	top: -22px;
+	right: 50px;
+	border-width: 14px;
+	border-style: solid;
+	border-color: transparent #1380ff transparent transparent;
+	transform: rotate(90deg);
+  }
+  

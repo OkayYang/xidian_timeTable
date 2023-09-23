@@ -12,6 +12,7 @@ Page({
         host: app.globalData.host,
         active: 0,
         rollText: '技术是开发它的人的共同灵魂。',
+        customBar: app.globalData.customBar,
         swiperList: [
 
         ],
@@ -20,11 +21,21 @@ Page({
 
         token: null,
     },
+    clickSchedul(){
+        wx.vibrateShort({
+          type: 'heavy'
+          
+        })
+        wx.navigateTo({
+          url: '/pages/course/course',
+        })
+    },
     bindxdu() {
         wx.navigateTo({
             url: '/pages/login/login',
         })
     },
+    
 
     /**
      * 标签点击
@@ -51,8 +62,20 @@ Page({
      */
     onLoad: function (options) {
         this.initData()
+        if (!wx.getStorageSync('add_my_tips')) {
+            this.setData({
+              add_tips: true
+            })
+          }
 
     },
+    closeAddTip() {
+        var time = (new Date).getTime()
+        this.setData({
+          add_tips: false
+        })
+        wx.setStorageSync('add_my_tips', time)
+      },
     initData() {
         Toast.loading({
             duration: 800, // 持续展示 toast
@@ -109,7 +132,7 @@ Page({
         this.setData({
             result:"第"+result.week+"周/"+utils.getWeedDay(result.day)
         })
-        console.log(result)
+      
         wx.getStorage({
             key: "token",
             success: (res) => {
@@ -131,7 +154,8 @@ Page({
                     }
                     
                 }
-                kcb = utils.convertJSJCDM(kcb)
+                console.log(kcb)
+                kcb = utils.getEveryDaySchedul(kcb)
                 console.log(kcb)
                 this.setData({
                     kcb: kcb

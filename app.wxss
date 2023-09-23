@@ -10,7 +10,11 @@
        url('//at.alicdn.com/t/c/font_3984136_sq6x3xc6m3s.woff?t=1680071199075') format('woff'),
        url('//at.alicdn.com/t/c/font_3984136_sq6x3xc6m3s.ttf?t=1680071199075') format('truetype');
 }
-
+page{
+  --theme: #1380ff;
+  --yellow: #ffa807;
+  --gradualTheme: linear-gradient(45deg, #1380ff, #1cbbb4);
+}
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;

@@ -43,6 +43,7 @@ Page({
       type: 'loading',
       message: '登录中...',
       duration: 0, // 持续展示 toast
+      forbidClick: true
       
     });
     
@@ -62,7 +63,7 @@ Page({
 						success: (res) => {
 							if (res.data.code == 200) {
                 let data = res.data.data
-                console.log(data.kcb)
+                
 								wx.setStorage({
 									key: "user",
 									data: data.ncUser,
@@ -78,6 +79,7 @@ Page({
                             Toast({
                               type: 'success',
                               message: '登录成功',
+                              forbidClick: true,
                               onClose: () => {
                                 wx.navigateBack()
                               },
@@ -97,10 +99,13 @@ Page({
                     let prop = json[i]
                     let data = {
                         "XQ": prop.XQ,
-                        "KCMC": prop.KCMC,
-                        "ZCMC": prop.ZCMC,
-                        "JASMC": prop.JASMC,
+                        "KCMC": prop.KCMC,//课程名称
+                        "ZCMC": prop.ZCMC,//周数
+                        "JASMC": prop.JASMC,//教室
                         "JSJCDM": prop.JSJCDM,//第几节
+                        "JSXM":prop.JSXM,//老师
+                        "SKFSDM_DISPLAY":prop.SKFSDM_DISPLAY//上课方式
+
                     }
                     list.push(data)
                 }
@@ -110,12 +115,13 @@ Page({
                 })
 
 							} else {
-								Toast.fail("账号或密码错误!")
+								Toast.fail("登录失败，请重新尝试!")
 							}
-							console.log(res)
+					
 						}
 					})
 				} else {
+
 					Toast.fail("网络异常!")
 					console.log('登录失败！' + res.errMsg)
 				}
@@ -124,7 +130,7 @@ Page({
         console.log(res)
       }
     })
-    console.log(2)
+
 
 
 	},

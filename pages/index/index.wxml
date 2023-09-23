@@ -1,5 +1,11 @@
 <!--index.wxml-->
-
+<cu-custom bgColor="bg-white">
+    <view slot="content">首页</view>
+</cu-custom>
+<view class="add_tips shadow" style="top:{{customBar + 8}}px" wx:if="{{add_tips}}">
+    <view>点击<text class="cuIcon-more"></text>添加到我的小程序 <text class="cuIcon-close" bindtap="closeAddTip"></text></view>
+    <view>微信下拉就能找到我啦</view>
+</view>
 <view class="top">
     <van-notice-bar left-icon="volume-o" scrollable mode="link" text="{{rollText}}" />
     <my-swiper list="{{swiperList}}" bind:swiperClick="articleClick" />
@@ -10,20 +16,20 @@
     <van-cell-group>
         <van-cell size="large" icon="bars" title="今日课程" border="{{false}}" value="{{result}}">
         </van-cell>
-        <view wx:if="{{token!=null}}">
-        <view wx:if="{{kcb.length==0}}">
-        <view style="font-size: larger;margin-top: 30rpx;text-align: center;padding: 30rpx;">
-            <text>今日没课放松一下吧！</text>
-        </view>
-            
-        </view>
-        <view wx:else>
-            <view  wx:for="{{kcb}}" wx:key="{{item}}"  style="color: black;">
-            
-                <van-cell size="large" title="{{item.KCMC}}" value="{{item.JASMC}}" label="{{item.ZCMC+','+item.JSJCDM}}" />
+        <view wx:if="{{token!=null}}" bind:tap="clickSchedul">
+            <view wx:if="{{kcb.length==0}}">
+                <view style="font-size: larger;margin-top: 30rpx;text-align: center;padding: 30rpx;">
+                    <text>今日没课放松一下吧！</text>
+                </view>
+
             </view>
-        </view>
-            
+            <view wx:else >
+                <view wx:for="{{kcb}}" wx:key="{{item}}" style="color: black;">
+
+                    <van-cell value-class="value-cell" size="large" title="{{item.KCMC}}" value="{{item.JASMC}}" label="{{item.ZCMC+','+item.start+'~'+item.end}}" />
+                </view>
+            </view>
+
         </view>
         <view wx:else>
             <view style="font-size: larger;margin-top: 30rpx;text-align: center;padding: 30rpx;">
