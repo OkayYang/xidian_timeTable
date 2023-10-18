@@ -2,7 +2,7 @@
 /**login.wxss**/
 @import "../../colorui/icon.wxss";
 .container {
-  background: #7acfa6;
+  background: #4994c4;
   align-items: stretch;
   padding: 0;
   height: 100%;
@@ -130,7 +130,7 @@ form {
   transition: all .25s ease-in-out;
 }
 .input-group.active {
-  border: 2px solid #7acfa6;
+  border: 2px solid #4994c4;
 }
 
 .input-label {
@@ -171,7 +171,7 @@ form {
   font-size: 13pt;
   line-height: 85rpx;
   height: 85rpx;
-  background: #7acfa6;
+  background:#4994c4;
   color: #fff;
   text-align: center;
   border-radius: 5px;
@@ -303,9 +303,9 @@ page{
   font-size: 9pt;
   padding: 5rpx 20rpx;
   text-align: center;
-  background-color: #7acfa6;
+  background-color: #4994c4;
   border-radius: 3px; 
-  border-bottom: 2px solid #4fc08d;
+  border-bottom: 2px solid #4994c4;
   color: #fff;
 }
 

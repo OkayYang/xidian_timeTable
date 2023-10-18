@@ -15,7 +15,7 @@
         <text class="text-black text-lg">第 {{selectWeek}}周 </text>
         <text class="cuIcon-unfold  text-black margin-left-xs"></text>
       </view>
-      <text class=" backPage cuIcon-back text-black" bindtap="BackPage"></text>
+      <!-- <text class=" backPage cuIcon-back text-black" bindtap="BackPage"></text> -->
     </view>
     <!-- <text class="icon-add settings text-black" style="top:{{statusBar}}px;line-height:{{customBar-statusBar}}px;height:{{customBar-statusBar}}px;transform:rotate({{showSetting?135:0}}deg)" bindtap='listDisplay'>
     </text> -->
@@ -23,67 +23,70 @@
 </view>
 
 <view class="top">
-    <!-- <view wx:for="{{['一','二','三','四','五','六','日']}}" class="top-text" wx:for-item="item" wx:for-index="index" style="background-color:{{index === result.day-1 ? '#1380ff' : '#fbfbfb'}}">
+  <!-- <view wx:for="{{['一','二','三','四','五','六','日']}}" class="top-text" wx:for-item="item" wx:for-index="index" style="background-color:{{index === result.day-1 ? '#1380ff' : '#fbfbfb'}}">
   周{{item}}
 </view>     -->
 
-    <view   wx:for="{{date}}" class="top-text" wx:for-item="item" wx:for-index="index" style="background-color:{{(index === result.day-1&&selectWeek==result.week) ? '#1380ff' : '#fbfbfb'}}; color:{{(index === result.day-1&&selectWeek==result.week) ? 'white' : 'black'}}">
- <view>
-    <view>{{item.week}}</view>
-  <view style="color:{{(index === result.day-1&&selectWeek==result.week) ? 'white' : '#95a5a6'}} ">{{item.date}}</view>
- </view>
-  
-</view>
+  <view wx:for="{{date}}" class="top-text" wx:for-item="item" wx:for-index="index" style="background-color:{{(index === result.day&&selectWeek==result.week) ? '#1380ff' : '#fbfbfb'}}; color:{{(index === result.day&&selectWeek==result.week)? 'white' : 'black'}}">
+    <view>
+      <view>{{item.week}}</view>
+      <view style="color:{{(index === result.day&&selectWeek==result.week)? 'white' : '#95a5a6'}} ">{{item.date}}</view>
+    </view>
+
+  </view>
 
 
 
 </view>
 
 <scroll-view scroll-y="true" class="scroll">
-    <view style="height:1200rpx;width:730rpx;display:flex;">
-        <view style="background-color:#fbfbfb;color:black;">
-            <view wx:for="{{[1,2,3,4,5,6,7,8,9,10,11]}}" class="left">
-                {{item}}
-            </view>
-        </view>
-        <view wx:for="{{[1,2,3,4,5,6,7,8,9,10,11]}}">
-            <view style="width:750rpx;margin-top:{{(index+1)*100}}rpx;  position: absolute;border-bottom:1rpx solid {{index==3?'#f6bec8':'lightgray'}};">
-            </view>
-        </view>
-
-        <!--课表-->
-        <view wx:for="{{kcb}}">
-            <view  class="flex-item kcb-item" bindtap="clickClass" data-statu="open" data-index="{{item}}" style="margin-left:{{(item.XQ-1)*100}}rpx;margin-top:{{(item.skjc-1)*100+5}}rpx;height:{{item.skcd*100-5}}rpx;background-color:{{colorArrays[index%8]}}">
-                <view   class="smalltext">{{item.KCMC+'@'+item.JASMC}}</view>
-            </view>
-        </view>
+  <view style="height:1200rpx;width:730rpx;display:flex;">
+    <view style="background-color:#fbfbfb;color:black;">
+      <view wx:for="{{[1,2,3,4,5,6,7,8,9,10,11]}}" class="left">
+        {{item}}
+      </view>
     </view>
+    <view wx:for="{{[1,2,3,4,5,6,7,8,9,10,11]}}">
+      <view style="width:750rpx;margin-top:{{(index+1)*100}}rpx;  position: absolute;border-bottom:1rpx solid {{index==3?'#f6bec8':'lightgray'}};">
+      </view>
+    </view>
+
+    <!--课表-->
+    <view wx:for="{{kcb}}">
+      <view class="flex-item kcb-item" bindtap="clickClass" data-statu="open" data-index="{{item}}" style="margin-left:{{(item.XQ-1)*100}}rpx;margin-top:{{(item.skjc-1)*100+5}}rpx;height:{{item.skcd*100-5}}rpx;background-color:{{colorArrays[index%8]}}">
+        <view class="smalltext">{{item.KCMC+'@'+item.JASMC}}</view>
+      </view>
+    </view>
+  </view>
 </scroll-view>
 
 
 <van-popup show="{{showWeekList}}" bind:close="hideWeekList" position="bottom" round>
-    <view class="week-list__popup">
-      <view class="text-center padding text-lg">切换周数</view>
-      <view class="week-list">
-        <view bindtap="selectWeek" data-index="{{index}}" wx:for="{{20}}" wx:key="*this" class="week-item {{result.week == item + 1 ? 'this-week' : ''}} {{selectWeek == item + 1 ? 'active' : ''}}">
-          <block wx:if="{{result.week == item + 1}}">本周</block>
-          <block wx:else>{{item < 9 ? 0 : '' }}{{item + 1}}</block>
-        </view>
+  <view class="week-list__popup">
+    <view class="text-center padding text-lg">切换周数</view>
+    <view class="week-list">
+      <view bindtap="selectWeek" data-index="{{index}}" wx:for="{{20}}" wx:key="*this" class="week-item {{result.week == item + 1 ? 'this-week' : ''}} {{selectWeek == item + 1 ? 'active' : ''}}">
+        <block wx:if="{{result.week == item + 1}}">本周</block>
+        <block wx:else>{{item < 9 ? 0 : '' }}{{item + 1}}</block>
       </view>
     </view>
+  </view>
 </van-popup>
 
-<van-popup closeable round
-  custom-style="width:60%" show="{{ classShow }}" bind:close="onClassClose" >
+<van-popup closeable round custom-style="width:60%" show="{{ classShow }}" bind:close="onClassClose">
   <view style="margin-left: 30rpx;">
-    <view style="text-align: left; margin-top: 70rpx; font-weight: bold;"><van-icon name="location" />{{currentClass.KCMC}}</view>
+    <view style="text-align: left; margin-top: 70rpx; font-weight: bold;">
+      <van-icon name="location" />{{currentClass.KCMC}}
+    </view>
     <view style="text-align: left; margin-top: 20rpx; "><text style="font-weight: bold;">老师:</text>{{currentClass.JSXM}}</view>
     <view style="text-align: left; margin-top: 20rpx; "><text style="font-weight: bold;">教室:</text>{{currentClass.JASMC}}</view>
     <view style="text-align: left; margin-top: 20rpx; "><text style="font-weight: bold;">上课时间:</text>{{currentClass.JSJCDM}}</view>
     <view style="text-align: left; margin-top: 20rpx; margin-bottom: 50rpx; "><text style="font-weight: bold;">上课方式:</text>{{currentClass.SKFSDM_DISPLAY}}</view>
-
-
   </view>
 
 
 </van-popup>
+
+<!-- 在页面内添加对应的节点 -->
+<van-dialog id="van-dialog" />
+

@@ -1,5 +1,6 @@
 // pages/course/course.js
 import utils from '../../utils/utils.js'
+import Dialog from '@vant/weapp/dialog/dialog';
 const app = getApp()
 Page({
 
@@ -8,35 +9,21 @@ Page({
 	 */
 	data: {
 		colorArrays: ["#85B8CF", "#90C652", "#D8AA5A", "#FC9F9D", "#0A9A84", "#61BC69", "#12AEF3", "#E29AAD"],
-		wlist: [
-			{ "xqj": 1, "skjc": 1, "skcd": 3, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 1, "skjc": 5, "skcd": 3, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 2, "skjc": 1, "skcd": 2, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 2, "skjc": 8, "skcd": 2, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 3, "skjc": 4, "skcd": 1, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 3, "skjc": 8, "skcd": 1, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 3, "skjc": 5, "skcd": 2, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 4, "skjc": 2, "skcd": 3, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 4, "skjc": 8, "skcd": 2, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 5, "skjc": 1, "skcd": 2, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 6, "skjc": 3, "skcd": 2, "kcmc": "高等数学@教A-301" },
-			{ "xqj": 7, "skjc": 5, "skcd": 3, "kcmc": "高等数学@教A-301" },
-
-		],
-		kcb: [],
+		kcb: null,
 		result: null,
 		showWeekList: false,
-		classShow:false,
+		classShow: false,
 		customBar: app.globalData.CustomBar,
 		statusBar: app.globalData.StatusBar,
 		custom: app.globalData.Custom,
-		selectWeek:null
+		selectWeek: null,
+		isLogin: false
 
 	},
-	BackPage(){
+	BackPage() {
 		wx.navigateBack({
 			delta: 1
-		  });
+		});
 
 	},
 	clickClass(e) {
@@ -44,24 +31,24 @@ Page({
 			type: 'medium',
 		})
 		this.setData({
-			classShow:true,
-			currentClass:e.currentTarget.dataset.index
+			classShow: true,
+			currentClass: e.currentTarget.dataset.index
 		})
 		console.log(e)
 
 	},
-	onClassClose(){
+	onClassClose() {
 		this.setData({
-			classShow:false
+			classShow: false
 		})
 	},
-	selectWeek(e){
+	selectWeek(e) {
 		var week = parseInt(e.currentTarget.dataset.index) + 1;
 		var date = utils.getWeekDates(week)
 
 		this.setData({
-			selectWeek:week,
-			date:date
+			selectWeek: week,
+			date: date
 		})
 		wx.getStorage({
 			key: "kcb",
@@ -91,9 +78,9 @@ Page({
 
 	showWeekList() {
 		wx.vibrateShort({
-          type: 'heavy'
-          
-        })
+			type: 'heavy'
+
+		})
 		this.setData({
 			showWeekList: true
 		})
@@ -104,19 +91,44 @@ Page({
 			showWeekList: false
 		})
 	},
+	isLogin() {
+		wx.getStorage({
+			key: "user",
+			success: (res) => {
+				this.setData({
+					isLogin: true
+				})
+
+			},
+			fail: (res) => {
+				console.log(res)
 
 
+				Dialog.alert({
+					title: '提示',
+					message: '请先授权登录',
+				}).then(() => {
 
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
-	onLoad(options) {
-		let result = utils.calcuWeek()
-		let date = utils.getThisWeekDates()
+						if (!this.data.isLogin) {
+							wx.navigateTo({
+								//url: '/pages/authorize/authorize',
+								url: '/pages/login/login'
+							})
+
+						}
+
+
+					})
+
+			}
+		})
+		let result = utils.getCurrentWeekday()
+
+		let date = utils.getWeekDates(result.week)
 		this.setData({
 			result: result,
 			date: date,
-			selectWeek:result.week
+			selectWeek: result.week
 		})
 		wx.getStorage({
 			key: "kcb",
@@ -138,8 +150,18 @@ Page({
 				})
 
 
-			}
+			},
+
 		})
+	},
+
+
+	/**
+	 * 生命周期函数--监听页面加载
+	 */
+	onLoad(options) {
+		this.isLogin()
+
 
 
 	},
@@ -155,6 +177,13 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		Dialog.close()
+		
+		if (!this.data.isLogin) {
+			this.isLogin()
+		} else {
+			
+		}
 
 	},
 
@@ -162,8 +191,10 @@ Page({
 	 * 生命周期函数--监听页面隐藏
 	 */
 	onHide() {
+		console.log("hide")
 
 	},
+	
 
 	/**
 	 * 生命周期函数--监听页面卸载

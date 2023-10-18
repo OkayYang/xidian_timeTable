@@ -78,7 +78,7 @@
 
 </van-tabs>
 
-<view bindtap="addTopicBtn" style="width: 120rpx; height: 120rpx;position: fixed;bottom: 50rpx;right: 20rpx;">
+<view wx:if="{{token!='1111111111'}}" bindtap="addTopicBtn" style="width: 120rpx; height: 120rpx;position: fixed;bottom: 50rpx;right: 20rpx;">
 	<image style="width: 90rpx; height: 90rpx;" src="/assets/images/add.png" />
 </view>
 <van-toast id="van-toast" />

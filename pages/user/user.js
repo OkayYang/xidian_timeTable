@@ -297,6 +297,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		Dialog.close()
 		if(this.token==null){
 			this.validLogin()
 		}else{

@@ -26,8 +26,8 @@ Page({
           type: 'heavy'
           
         })
-        wx.navigateTo({
-          url: '/pages/course/course',
+        wx.switchTab({
+            url: '/pages/course/course',
         })
     },
     bindxdu() {
@@ -128,7 +128,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        let result = utils.calcuWeek()
+        let result = utils.getCurrentWeekday()
         this.setData({
             result:"第"+result.week+"周/"+utils.getWeedDay(result.day)
         })
@@ -137,9 +137,10 @@ Page({
             key: "token",
             success: (res) => {
                 this.setData({
-                    token: res.data
+                    token: res.data,
                     //	userInfo: res.data
                 })
+                
             }
         })
         wx.getStorage({
@@ -149,24 +150,54 @@ Page({
                 let kcb=[]
                 for (let index = 0; index < array.length; index++) {
                     const element = array[index];
-                    if(element.XQ==result.day&&utils.checkWeekRange(element.ZCMC,result.week)){
+                    if(element.XQ==result.day+1&&utils.checkWeekRange(element.ZCMC,result.week)){
                         kcb.push(element)
                     }
                     
                 }
-                console.log(kcb)
+                
                 kcb = utils.getEveryDaySchedul(kcb)
-                console.log(kcb)
+      
                 this.setData({
                     kcb: kcb
-
-        
                     //	userInfo: res.data
                 })
                 
 
             }
         })
+
+        // wx.getStorage({
+        //     key:"cookie",
+        //     success:(res)=>{
+        //         let cookie = res.data
+        //         console.log(cookie)
+        //         wx.request({
+        //             url: 'https://yjspt.xidian.edu.cn/gsapp/sys/wdkbapp/modules/xskcb/xspkjgcx.do',
+        //             method:'POST',
+        //             header:{
+        //                 cookie:cookie
+        //             },
+
+        //             data:{
+        //                 "XNXQDM":"20231",
+        //                 "*order":"-ZCBH"
+        //             },
+                    
+        //             success:(res)=>{
+        //                 console.log(res)
+        //             },
+        //             fail:(res)=>{
+        //                 console.log(res)
+        //             }
+        //           })
+        //     }
+
+        // })
+        
+
+
+        
 
 
 

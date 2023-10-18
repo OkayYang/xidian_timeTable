@@ -42,6 +42,7 @@ page{
     justify-content: center;
     display: flex;
     align-items: center;
+    border-radius: 10rpx;
   }
   
   .scroll {

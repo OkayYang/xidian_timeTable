@@ -1,7 +1,10 @@
 {
-  "navigationStyle": "default",
   "navigationBarTitleText": "登录",
-  "navigationBarBackgroundColor": "#7acfa6",
+  "navigationStyle":"default",
   "enablePullDownRefresh": false,
-  "disableScroll": true
+  "disableScroll": true,
+  "navigationBarBackgroundColor": "#4994c4",
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  }
 }

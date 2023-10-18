@@ -1,7 +1,0 @@
-/**index.wxss**/
-
-.warper{
-	padding-bottom: 30rpx;
-	width: 100%;
-	background-color: #ececec;
-}
