@@ -147,7 +147,7 @@ Page({
 	 */
 	onLoad(options) {
 		let that = this
-		this.validLogin()
+		
 		wx.request({
 			url: this.data.host + '/wx/topic/type',
 			success: (res) => {
@@ -181,19 +181,17 @@ Page({
 				})
 			},
 			fail: (res) => {
-				Dialog.confirm({
+
+				Dialog.alert({
 					title: '提示',
 					message: '请先授权登录',
 				})
 					.then(() => {
 						wx.navigateTo({
 							//url: '/pages/authorize/authorize',
-							url:'/pages/login/login'
+							url: '/pages/login/login'
 						})
 					})
-					.catch(() => {
-						// on cancel
-					});
 
 			}
 		})
@@ -210,6 +208,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		this.validLogin()
 
 	},
 

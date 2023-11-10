@@ -1,6 +1,9 @@
 {
 	"pages": [
 		"pages/index/index",
+		"pages/addTopic/addTopic",
+		
+		
 		"pages/course/course",
 		"pages/login/login",
 		"pages/edit/edit",
@@ -11,7 +14,7 @@
 
 		"pages/detailTopic/detailTopic",
 
-		"pages/addTopic/addTopic",
+		
 		"pages/detail/detail",
 		"pages/contestDetail/contestDetail"
 

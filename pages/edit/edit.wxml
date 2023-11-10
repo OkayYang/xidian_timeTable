@@ -23,7 +23,7 @@
                     <van-cell data-id="1" data-name="" title="个性签名" value="{{signature==null?initSignature:signature}}" is-link="true" bindtap="showSignatureDialog" />
                 </van-cell-group>
             </view>
-            <view style="margin-top: 30rpx;padding-bottom: 80rpx;">
+            <view wx:if="{{token!='1111111111'}}" style="margin-top: 30rpx;padding-bottom: 80rpx;">
                 <van-cell-group inset bindtap="tipUser">
                     <van-cell center title="{{'[教务信息]'}}" title-style="color:red">
                     </van-cell>

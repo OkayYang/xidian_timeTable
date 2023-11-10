@@ -1,1 +1,12 @@
 /* pages/detailTopic/detailTopic.wxss */
+.triangle {
+    position: absolute;
+    bottom: -15rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20rpx solid transparent;
+    border-right: 20rpx solid transparent;
+    border-top: 20rpx solid #39b54a;
+  }

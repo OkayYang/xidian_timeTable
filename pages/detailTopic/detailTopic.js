@@ -13,6 +13,7 @@ Page({
 		topicId: null,
 		topic: null,
 		comments: null,
+		commentImg:null,
 		InputBottom: 0,
 		showPopup: false,
 		placeholder: "我来说两句",
@@ -100,7 +101,7 @@ Page({
 	},
 	sendComment() {
 		if (this.data.token != null) {
-			if (!this.isNullOrWhiteSpace(this.data.inputText)) {
+			if (!this.isNullOrWhiteSpace(this.data.inputText)||this.data.commentImg!=null) {
 				Toast({
 					duration: 1000,
 					type: 'loading',
@@ -119,7 +120,8 @@ Page({
 					data: {
 						discussContent: this.data.inputText,
 						relateId: this.data.topicId,
-						parentId: this.data.commentParentId
+						parentId: this.data.commentParentId,
+						discussImages:this.data.commentImg
 					},
 					success: (res) => {
 						console.log(res)
@@ -128,7 +130,10 @@ Page({
 								commentParentId: 0,
 								discussContent: null,
 								placeholder: "我来说两句",
-								inputText: null
+								inputText: null,
+								commentImg:null
+								
+
 
 							})
 							this.initComment(this.data.topicId)
@@ -168,6 +173,46 @@ Page({
 
 
 	},
+	cancelUpload(){
+		this.setData({
+			commentImg:null
+		})
+
+	},
+	commentImgClick(){
+		let that = this
+		wx.chooseImage({
+			count: 1, //默认9
+			sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+			sourceType: ['album'], //从相册选择
+			success: (res) => {
+				let list = []
+				for (let index = 0; index < res.tempFilePaths.length; index++) {
+					wx.uploadFile({
+						filePath: res.tempFilePaths[index],
+						name: 'file',
+						url: that.data.host + '/wx/file/upload',
+						success: (res) => {
+							let resp = JSON.parse(res.data)
+							if (resp.code == 200) {
+								that.setData({
+									commentImg: resp.data
+								})
+
+							}
+						},
+						fail: (res) => {
+							Toast.fail('图片上传失败');
+							console.log(res)
+						}
+					})
+
+				}
+
+			}
+		});
+
+	},
 	unLoginDialogTip() {
 		Dialog.confirm({
 			title: '提示',
@@ -186,12 +231,20 @@ Page({
 	isNullOrWhiteSpace(str) {
 		return (!str || str.trim().length === 0);
 	},
+	ViewComment(e){
+		console.log(e)
+		let urls = []
+		urls.push(e.currentTarget.dataset.url)
+		wx.previewImage({
+			urls: urls,
+			current: e.currentTarget.dataset.url
+		});
+
+	},
 
 	ViewImage(e) {
-		let array = e.currentTarget.dataset.urls;
-		for (let index = 0; index < array.length; index++) {
-			array[index] = this.data.host + array[index]
-		}
+		console.log(e)
+		
 		//console.log(e)
 		wx.previewImage({
 			urls: e.currentTarget.dataset.urls,

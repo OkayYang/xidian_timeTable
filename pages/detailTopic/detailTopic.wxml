@@ -8,9 +8,9 @@
         <view class="cu-avatar round lg" style="background-image:url({{host+topic.uImage}});"></view>
         <view class="content flex-sub">
           <view class="text-bold text-lg">{{topic.uNick}}
-						<view style="height:30rpx;line-height:30rpx;" wx:if="{{topic.uType!=null}}" class="sm radius radius cu-tag bg-pink ">{{topic.uType}}</view>
+            <view style="height:30rpx;line-height:30rpx;" wx:if="{{topic.uType!=null}}" class="sm radius radius cu-tag bg-pink ">{{topic.uType}}</view>
 
-					</view>
+          </view>
           <view class="text-gray  flex justify-between">
             {{topic.createTime}}
           </view>
@@ -23,45 +23,79 @@
       {{topic.topicContent}}
     </view>
     <view class="grid flex-sub padding-lr col-2 grid-square">
-			<!-- {{utils.splitString(topic.topicImages).length==1?'only-img':''}} -->
-      <view  wx:if="{{topic.topicImages!=''}}"  class="bg-img " 
-      style="background-image:url({{host+img}});" wx:for="{{utils.splitString(topic.topicImages)}}" wx:for-item="img" wx:key="{{img}}" bindtap="ViewImage"
-						data-url="{{host+img}}" data-urls="{{utils.splitString(topic.topicImages)}}"
-      >
+      <!-- {{utils.splitString(topic.topicImages).length==1?'only-img':''}} -->
+      <view wx:if="{{topic.topicImages!=''}}" class="bg-img " style="background-image:url({{host+img}});" wx:for="{{utils.splitString(topic.topicImages)}}" wx:for-item="img" wx:key="{{img}}" bindtap="ViewImage" data-url="{{host+img}}" data-urls="{{utils.splitString(topic.topicImages)}}">
       </view>
     </view>
-    <view class="text-gray text-lg text-right padding flex justify-end" >
-		<view bindtap="topicComment">
-		
-      <text class="cuIcon-attentionfill margin-lr-xs"></text> {{topic.topicFlows+1}}
-					<!-- <text class="cuIcon-appreciatefill margin-lr-xs"></text> {{topic.topicLikes}} -->
-					<text class="cuIcon-messagefill margin-lr-xs"></text> {{commentCount}}
-				</view>
-				
+    <view class="text-gray text-lg text-right padding flex justify-end">
+      <view bindtap="topicComment">
+
+        <text class="cuIcon-attentionfill margin-lr-xs"></text> {{topic.topicFlows+1}}
+        <!-- <text class="cuIcon-appreciatefill margin-lr-xs"></text> {{topic.topicLikes}} -->
+        <text class="cuIcon-messagefill margin-lr-xs"></text> {{commentCount}}
+      </view>
+
     </view>
     <view class="cu-list menu-avatar comment solids-top" wx:if="{{comments.length!=0}}" style="margin-bottom: 50rpx;">
       <view class="cu-item" wx:for="{{comments}}" wx:key="item">
         <view class="cu-avatar round" style="background-image:url({{host+item.uImage}});"></view>
         <view class="content">
-          <view  class="text-black  text-xl"><text style="font-weight: bold;"> {{item.uNick}}</text>
-					<view wx:if="{{topic.uid==item.uid}}" style="margin-left: 10rpx;" class=" cu-tag line-blue text-sm radius  text-grey">楼主</view>
-					</view>
-          <view class="text-black text-content text-df" data-reply="{{item}}" data-uid="{{item.uid}}" bindlongpress="onCommentLongPress" bindtap="commentClick">
-           {{item.discussContent}}
+          <view class="text-black  text-xl"><text style="font-weight: bold;"> {{item.uNick}}</text>
+            <view wx:if="{{topic.uid==item.uid}}" style="margin-left: 10rpx;" class=" cu-tag line-blue text-sm radius  text-grey">楼主</view>
           </view>
+          <view wx:if="{{item.discussContent!=null}}" class="text-black text-content text-df" data-reply="{{item}}" data-uid="{{item.uid}}" bindlongpress="onCommentLongPress" bindtap="commentClick">
+            {{item.discussContent}}
+          </view>
+          <view wx:if="{{item.discussImages!=null}}" class="  cu-card case ">
+            <view class="shadow">
+              <view class="image" bindtap="ViewComment" data-url="{{host+item.discussImages}}">
+                <image src="{{host+item.discussImages}}" mode="widthFix"></image>
+              </view>
+            </view>
+          </view>
+
+          <!-- <view wx:if="{{comment.discussImages!=null}}" class=" content cu-card case">
+                    <view class="shadow">
+                      <view bindtap="ViewComment" data-url="{{host+comment.discussImages}}" catchtap>
+                        <image src="{{host+comment.discussImages}}" mode="widthFix"></image>
+                      </view>
+                    </view>
+                  </view> -->
           <!-- <view  class="flex-sub"> <van-image fit="contain"  width="300rpx" height="300rpx" src="https://img.yzcdn.cn/vant/cat.jpeg" /></view> -->
           <!-- 子评论 -->
-          <view  wx:if="{{item.childrenComments.length>0}}" class="bg-grey padding-sm radius margin-top-sm   light">
-            <view  class="flex "  wx:for="{{item.childrenComments}}" wx:for-item="comment" wx:key="{{comment}}" data-reply="{{comment}}" data-uid="{{comment.uid}}" bindlongpress="onCommentLongPress" bindtap="commentClick" >
-              <view class="text-blue" wx:if="{{comment.parentComments==null}}">
-							{{comment.uNick}}
-							<view wx:if="{{topic.uid==comment.uid}}"class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view>
-							:
+          <view wx:if="{{item.childrenComments.length>0}}" class="bg-grey padding-sm radius margin-top-sm   light">
+            <view wx:for="{{item.childrenComments}}" wx:for-item="comment" wx:key="{{comment}}" data-reply="{{comment}}" data-uid="{{comment.uid}}" bindlongpress="onCommentLongPress" bindtap="commentClick">
+              <view class="flex">
+                <view class="text-blue" wx:if="{{comment.parentComments==null}}">
+                  {{comment.uNick}}
+                  <view wx:if="{{topic.uid==comment.uid}}" class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view>
+                  :
 
-							</view>
-              <view  class="text-blue"  wx:else>{{comment.uNick}}<view wx:if="{{topic.uid==comment.uid}}"class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view><text  class="text-black" >回复</text>{{comment.parentComments.uNick}}<view wx:if="{{topic.uid==comment.parentComments.uid}}"class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view>：</view>
-              <view class="flex-sub text-black" >{{comment.discussContent}}</view>
+                </view>
+                <view class="text-blue" wx:else>{{comment.uNick}}<view wx:if="{{topic.uid==comment.uid}}" class=" radius sm cu-tag line-blue text-sm text-grey">
+                    楼主
+
+                  </view><text class="text-black">回复</text>{{comment.parentComments.uNick}}<view wx:if="{{topic.uid==comment.parentComments.uid}}" class=" radius sm cu-tag line-blue text-sm text-grey">楼主</view>：
+                </view>
+                <view wx:if="{{comment.discussContent!=null||comment.discussImages!=null}}" class="flex-sub text-black">
+                  <text wx:if="{{comment.discussContent!=null}}">{{comment.discussContent}}</text>
+
+
+                </view>
+              </view>
+              <view wx:if="{{comment.discussImages!=null}}" class="grid flex-sub padding-lr col-3 grid-square">
+                <view class="bg-img " style="background-image:url({{host+comment.discussImages}});" bindtap="ViewComment" data-url="{{host+comment.discussImages}}" catchtap>
+                </view>
+                <!-- <view class="shadow">
+                      <view class="content" bindtap="ViewComment" data-url="{{host+comment.discussImages}}" catchtap>
+                        <image src="{{host+comment.discussImages}}" mode="aspectFill"></image>
+                      </view>
+                    </view> -->
+              </view>
+
+
             </view>
+
           </view>
           <view class="margin-top-sm flex justify-between">
             <view class="text-gray text-df">{{item.createTime}}</view>
@@ -75,21 +109,33 @@
       <i-load-more tip="到底了" loading="{{ false }}" />
 
 
-    
+
     </view>
   </view>
-	<view wx:if="{{!showPopup}}" class="cu-bar foot input {{InputBottom!=0?'cur':''}}" style="bottom:{{InputBottom}}px;">
-  <view class="action">
-    <!-- <text class="cuIcon-pic lg text-gray"></text> -->
-		<text class="cuIcon-write lg text-gray"></text>
+  <view wx:if="{{!showPopup}}" class="cu-bar foot input {{InputBottom!=0?'cur':''}}" style="bottom:{{InputBottom}}px;">
+    <view class="action">
+      <view wx:if="{{commentImg!=null}}" style="position: absolute;top:-165rpx;left: 1rpx;height: 150rpx;width: 150rpx;background-color: #39b54a;display: flex;justify-content: center;align-items: center;">
+
+        <image src="{{host+commentImg}}" mode="aspectFill" style="height: 120rpx;width: 120rpx;">
+        </image>
+        <view style="position: absolute;top:-15rpx;left:125rpx;font-size: 30rpx;color: #767A82;" bind:tap="cancelUpload">
+          <image src="../../assets/images/close.png" style="width: 40rpx;height: 40rpx;"></image>
+        </view>
+        <view class="triangle"></view>
+      </view>
+
+      <text bind:tap="commentImgClick" class="cuIcon-pic lg text-gray"></text>
+      <!-- <text class="cuIcon-write lg text-gray"></text> -->
+
+
+    </view>
+    <input class="solid-bottom" bindinput="commentInput" value="{{inputText}}" bindfocus="InputFocus" bindblur="InputBlur" adjust-position="{{true}}" placeholder="{{placeholder}}" focus="{{inputFocus}}" maxlength="300" cursor-spacing="10"></input>
+
+    <button class="cu-btn bg-green shadow" bindtap="sendComment">评论</button>
   </view>
-  <input class="solid-bottom" bindinput="commentInput" value="{{inputText}}" 	 bindfocus="InputFocus" bindblur="InputBlur" adjust-position="{{true}}" placeholder="{{placeholder}}" focus="{{inputFocus}}" maxlength="300" cursor-spacing="10"></input>
-  
-  <button class="cu-btn bg-green shadow" bindtap="sendComment">评论</button>
-</view>
 </view>
 <view wx:else>
-	<van-empty image="error" description="访问页面不存在" />
+  <van-empty image="error" description="访问页面不存在" />
 </view>
 
 <!-- 在页面内添加对应的节点 -->
@@ -98,14 +144,4 @@
 <van-toast id="van-toast" />
 
 
-<van-action-sheet
-  show="{{ showPopup }}"
-  actions="{{ actions }}"
-  description="确认要删除评论吗？"
-	cancel-text="取消"
-	bind:close="onPopupClose"
-	bind:cancel="onPopupClose"
-	bind:select="onPopupClick"
-/>
-
-
+<van-action-sheet show="{{ showPopup }}" actions="{{ actions }}" description="确认要删除评论吗？" cancel-text="取消" bind:close="onPopupClose" bind:cancel="onPopupClose" bind:select="onPopupClick" />
