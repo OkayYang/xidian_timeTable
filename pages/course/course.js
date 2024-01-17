@@ -2,6 +2,7 @@
 import utils from '../../utils/utils.js'
 import Dialog from '@vant/weapp/dialog/dialog';
 const app = getApp()
+var domain = app.globalData.host;
 Page({
 
 	/**
@@ -160,7 +161,23 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		this.isLogin()
+    this.isLogin()
+    // wx.getStorage({
+		// 	key: "cookies",
+		// 	success: (res) => {
+    //     console.log(res)
+    //     let cookies = res.data
+    //     wx.request({
+    //       url: domain+'/wx/xdu/xskcb',
+    //       method:'POST',
+    //       data:JSON.stringify(cookies),
+    //       success: (res) =>{
+    //         console.log(res)
+    //       }
+          
+    //     })
+    //   }
+    // })
 
 
 

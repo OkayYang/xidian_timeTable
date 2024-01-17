@@ -1,29 +1,25 @@
 {
 	"pages": [
-		"pages/index/index",
+    "pages/index/index",
+    "pages/slider/slider",
+  
 		"pages/addTopic/addTopic",
-		
-		
 		"pages/course/course",
 		"pages/login/login",
 		"pages/edit/edit",
-
 		"pages/topic/topic",
 		"pages/user/user",
 		"pages/authorize/authorize",
-
 		"pages/detailTopic/detailTopic",
-
-		
 		"pages/detail/detail",
-		"pages/contestDetail/contestDetail"
-
-
+		"pages/contestDetail/contestDetail",
+		"components/verification"
 	],
 	"lazyCodeLoading": "requiredComponents",
 	"tabBar": {
 		"selectedColor": "#3271ae",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "/assets/images/index.png",
@@ -65,6 +61,5 @@
 		"i-load-more": "../../dist/load-more/index",
 		"van-icon": "@vant/weapp/icon/index"
 	},
-
 	"sitemapLocation": "sitemap.json"
 }

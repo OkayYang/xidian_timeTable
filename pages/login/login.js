@@ -20,22 +20,79 @@ Page({
     idcard: '',
     angle: 0,
     percent: 0,
-    costSeconds: 0
-	},
-	xdulogin(){
-		// var that = this
-		// wx.request({
-		// 	url: domain+'/wx/xdu/login',
-		// 	data:{
-		// 		"uXh":that.data.userid,
-		// 		"uPassword":that.data.passwd
-		// 	},
-		// 	method:'POST',
-		// 	success: (res) =>{
-		// 		console.log(res)
-		// 	}
+    costSeconds: 0,
+    //验证码
+    isVerification: false,
+    bigImage:null,
+    smallImage:null,
+    isneed:false,
+    cookies:null,
+    clltValue:"userNameLogin",
+    dlltValue: "generalLogin",
+    ltValue: "",
+    exeValue:"",
 
-    // })
+  },
+  onVerifyHandler(event){
+    let that = this
+    var componentInstance  = event.detail.componentInstance;
+    var spanValue = Math.round(event.detail.span);
+    console.log('Received span:', spanValue);
+    wx.request({
+      url: domain+'/wx/xdu/verifyCaptcha',
+      method:'POST',
+      data:{
+        cookies:JSON.stringify(that.data.cookies),
+        username:that.data.userid,
+        span:spanValue
+      },
+      success:(res)=>{
+        console.log(res)
+        if(res.data.code==200){
+          componentInstance.setData({
+            'status':1
+          })
+          Toast({
+            type: 'success',
+            message: '验证成功',
+            onClose: () => {
+              this.setData({
+                isVerification:false
+              })
+              this.xdulogin()
+              componentInstance.setData({
+                'slider.left':0,
+                'status':-1
+              })
+
+            },
+          });
+        }else{
+          componentInstance.setData({
+            'status':0
+          })
+          Toast({
+            type: 'fail',
+            message: '验证失败',
+            onClose: () => {
+              this.refreshCaptcha()
+              componentInstance.setData({
+                'slider.left':0,
+                'status':-1
+              })
+      
+            },
+          });
+          
+          
+        }
+      }
+
+    })
+
+  },
+  xdulogin(){
+    let that =this
     if (!this.vaildForm()) {
       return
     }
@@ -44,21 +101,24 @@ Page({
       message: '登录中...',
       duration: 0, // 持续展示 toast
       forbidClick: true
-      
     });
     
-    let that =this
 		wx.login({
 			success(res) {
 				if (res.code) {
 					//发起网络请求
 					wx.request({
 						url: domain + '/wx/user/login',
-						method: 'POST',
+            method: 'POST',
 						data: {
               code: res.code,
               username:that.data.userid,
-				      password:that.data.passwd
+              password:that.data.passwd,
+              cookies:JSON.stringify(that.data.cookies),
+              clltValue:that.data.clltValue,
+              dlltValue:that.data.dlltValue,
+              exeValue:that.data.exeValue,
+              ltValue:that.data.ltValue,
 						},
 						success: (res) => {
 							if (res.data.code == 200) {
@@ -69,8 +129,8 @@ Page({
 									data: data.ncUser,
 									success: (res) => {
 										wx.setStorage({
-											key: "cookie",
-											data: data.cookieStore,
+											key: "cookies",
+											data: data.cookies,
 											success: (res) => {
                         wx.setStorage({
                           key:'token',
@@ -131,9 +191,49 @@ Page({
       }
     })
 
+  },
+	verifylogin(){
+		let that =this
+    if (!this.vaildForm()) {
+      return
+    }
+    wx.request({
+      url: domain+'/wx/xdu/checkNeedCaptcha?username='+that.data.userid,
+      success:(res)=>{
+        let data = res.data;
+        console.log(data)
+        this.setData({
+          clltValue:data.clltValue,
+          dlltValue:data.dlltValue,
+          exeValue:data.exeValue,
+          ltValue:data.ltValue
+        })
+        if(data.need){
+          this.refreshCaptcha(that.data.userid)
+          this.setData({
+            isVerification:true
+          })
 
-
-	},
+        }
+      }
+    })
+  },
+  refreshCaptcha(username){
+    wx.request({
+      url: domain+'/wx/xdu/openSliderCaptcha?username='+username,
+      success:(res)=>{
+        this.setData({
+          bigImage:'data:image/png;base64,'+res.data.bigImage,
+          smallImage:'data:image/png;base64,'+res.data.smallImage,
+          cookies:res.data.cookies
+        })
+        wx.setStorage({
+          key:'cookies',
+          data:res.data.cookies
+        })
+      }
+    })
+  },
   onLoad: function () {
   },
   onReady: function () {

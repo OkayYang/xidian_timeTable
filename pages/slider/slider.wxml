@@ -1,0 +1,10 @@
+<slide-verify  
+is-show="{{isVerification}}" 
+enable-close="{{true}}" 
+bigImage="{{bigImage}}"
+smallImage="{{smallImage}}"
+bind:onverify="onVerifyHandler"
+>
+</slide-verify>
+<van-toast id="van-toast" />
+

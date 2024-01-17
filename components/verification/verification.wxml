@@ -1,0 +1,42 @@
+<!--
+	遮罩层，弹框
+	图片背景，滑动框
+	图片比例：16:9 1.777777
+-->
+<view class="back" wx:if="{{isShow}}"></view>
+<view class="container" wx:if="{{isShow}}">
+  <view class="slidebox">
+    <view class="slidetitle">
+      请完成安全校验
+      <view class="closebtn" bindtap="closeClick" wx:if="{{enableClose}}">
+        <view class="close"></view>
+      </view>
+      <!-- <view class="closebtn" bindtap="refereshClick">
+        <view class="referesh"></view>
+      </view> -->
+    </view>
+    <view class="inner">
+      <view class="box" style="width:{{box.width}}px;height:{{box.height}}px;background-image: url({{bigImage}});">
+        <!-- <view class="block" style="left:{{position.left}}px;top:{{position.top}}px;"></view> -->
+        <view class="block real" style="left:{{slider.left}}px;background-image: url({{smallImage}});background-size: cover;height: {{slider.height}}px;width:{{slider.width}}px"></view>
+      </view>
+      <view class="tool" bindtouchstart="startClick" bindtouchmove="moveClick" bindtouchend="endClick">
+        <view class="result" wx:if="{{status>=0}}">
+          <view class="error" wx:if="{{status==0}}">
+            <icon type="warn"></icon> 验证失败
+          </view>
+          <view class="success" wx:if="{{status==1}}">
+            <icon type="success"></icon> 验证成功
+          </view>
+        </view>
+        <block wx:else>
+          <view class="slideback {{isMove?'active':''}}" style="width:{{slider.left}}px;"></view>
+          <view class="slidebtn" style="left:{{slider.left}}px;">
+            <view class="icon"></view>
+          </view>
+          向右滑动填充图片
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

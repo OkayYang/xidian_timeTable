@@ -29,7 +29,7 @@
           
         </form>
         
-				<button class="confirm-btn" bindtap="xdulogin">
+				<button class="confirm-btn" bindtap="verifylogin">
           <text>登    录</text>
         </button>
       </view>
@@ -40,7 +40,14 @@
   </block>
 
 </view>
-
+<slide-verify  
+is-show="{{isVerification}}" 
+enable-close="{{true}}" 
+bigImage="{{bigImage}}"
+smallImage="{{smallImage}}"
+bind:onverify="onVerifyHandler"
+>
+</slide-verify>
 <van-toast id="van-toast" />
 <!-- 在页面内添加对应的节点 -->
 <van-notify id="van-notify" />

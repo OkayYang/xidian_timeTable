@@ -243,11 +243,22 @@ Page({
 	},
 
 	ViewImage(e) {
-		console.log(e)
-		
+    console.log(e)
+    let urls = []
+		urls.push(e.currentTarget.dataset.urls)
+    //console.log(urls)
+    let that = this
+    let array=[]
+    //console.log(urls[0].length)
+    for (let index = 0; index < urls[0].length; index++) {
+      array.push(this.data.host+urls[0][index]);
+    }
+    //console.log(array)
+    
+	
 		//console.log(e)
 		wx.previewImage({
-			urls: e.currentTarget.dataset.urls,
+			urls: array,
 			current: e.currentTarget.dataset.url
 		});
 	},

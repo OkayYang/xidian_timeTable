@@ -5,6 +5,7 @@
   "disableScroll": true,
   "navigationBarBackgroundColor": "#4994c4",
   "usingComponents": {
-    "cu-custom": "/colorui/components/cu-custom"
+    "cu-custom": "/colorui/components/cu-custom",
+    "slide-verify": "/components/verification/verification"
   }
 }

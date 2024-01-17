@@ -48,8 +48,8 @@
           </view>
           <view wx:if="{{item.discussImages!=null}}" class="  cu-card case ">
             <view class="shadow">
-              <view class="image" bindtap="ViewComment" data-url="{{host+item.discussImages}}">
-                <image src="{{host+item.discussImages}}" mode="widthFix"></image>
+              <view style="height: 250rpx;width: 250rpx;" class="image" bindtap="ViewComment" data-url="{{host+item.discussImages}}">
+                <image data-reply="{{item}}" data-uid="{{item.uid}}" bindlongpress="onCommentLongPress" src="{{host+item.discussImages}}" mode="aspectFill"></image>
               </view>
             </view>
           </view>
